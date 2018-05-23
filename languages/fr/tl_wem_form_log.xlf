@@ -1,11 +1,11 @@
 <?xml version="1.0" ?><xliff version="1.1">
-  <file datatype="php" original="system/modules/wem-contao-form-submissions/languages/en/tl_wem_form_submission.php" source-language="en" target-language="fr">
+  <file datatype="php" original="system/modules/wem-contao-form-submissions/languages/en/tl_wem_form_log.php" source-language="en" target-language="fr">
     <body>
-		<trans-unit id="tl_wem_form_submission.wem_submissions.0">
+		<trans-unit id="tl_wem_form_log.wem_submissions.0">
     		<source>Manage form submissions</source>
     		<target>Gérer les soumissions du formulaire</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_form_submission.wem_submissions.1">
+		<trans-unit id="tl_wem_form_log.wem_submissions.1">
     		<source>Manage form ID %s submissions</source>
     		<target>Gérer les soumissions du formulaire ID %s</target>
 		</trans-unit>

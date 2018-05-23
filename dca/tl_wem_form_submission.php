@@ -20,7 +20,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => true,
 		'ptable'                      => 'tl_form',
-		'ctable'					  => array('tl_wem_form_submission_field')
+		'ctable'					  => array('tl_wem_form_submission_field'),
 		'sql' => array
 		(
 			'keys' => array
@@ -146,7 +146,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 			'options_callback'        => array('tl_wem_form_submission', 'getFormTags'),
 			'eval'                    => array('chosen'=>true, 'mandatory'=>true, 'multiple'=>true),
 			'sql'                     => "blob NULL'"
-		)
+		),
 
 		'fields' => array
 		(
@@ -166,7 +166,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 		        'operations' => array('edit', 'delete'),
 		        'tl_class'=>'clr',
 		    ),
-		)
+		),
 	)
 );
 

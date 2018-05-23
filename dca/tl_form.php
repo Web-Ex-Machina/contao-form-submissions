@@ -12,6 +12,7 @@
  * Add ctable to tl_form
  */
 $GLOBALS['TL_DCA']['tl_form']['config']['ctable'][] = 'tl_wem_form_submission';
+$GLOBALS['TL_DCA']['tl_form']['config']['ctable'][] = 'tl_wem_form_log';
 
 /**
  * Add operations to tl_form
@@ -42,14 +43,14 @@ $GLOBALS['TL_DCA']['tl_form']['list']['operations']['wem_statistics'] = array
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-class tl_wem_form extends tl_form
+/*class tl_wem_form extends tl_form
 {
 	/**
 	 * Import the back end user object
 	 */
-	public function __construct()
+	/*public function __construct()
 	{
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 	}
-}
+}*/
