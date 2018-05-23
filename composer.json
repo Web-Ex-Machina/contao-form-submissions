@@ -1,0 +1,44 @@
+{
+    "name": "webexmachina/contao-form-submissions",
+    "description": "Form Submissions for Contao Open Source CMS",
+    "keywords": ["form", "submission", "storage", "stats", "webexmachina", "module", "contao"],
+    "type": "contao-module",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Web ex Machina",
+            "homepage": "https://www.webexmachina.fr",
+            "role":"Developer"
+        }
+    ],
+    "support":{
+        "website":"https://www.webexmachina.fr/",
+        "issues":"https://github.com/webexmachina/contao-form-submissions/issues",
+        "source":"https://github.com/webexmachina/contao-form-submissions"
+    },
+    "require": {
+        "php": ">=5.5",
+        "phpoffice/phpspreadsheet": "~1.2",
+        "contao/core-bundle": "~3.2 || ~4.1",
+        "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
+        "terminal42/dcawizard":"2.*"
+    },
+    "autoload":{
+        "psr-0": {
+            "WEM\\": [
+                "library/"
+            ]
+        },
+        "classmap": [""]
+    },
+    "extra": {
+        "contao": {
+            "sources": {
+                "": "system/modules/wem-contao-form-submissions"
+            },
+            "runonce": [
+                "system/modules/wem-contao-form-submissions/config/runonce.php"
+            ]
+        }
+    }
+}
