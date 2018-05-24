@@ -109,7 +109,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 		(
 			'eval'                    => array('unique'=>true, 'doNotCopy'=>true),
 			'sql'                     => "varchar(255) NOT NULL default ''"
-		)
+		),
 
 		'createdAt' => array
 		(
