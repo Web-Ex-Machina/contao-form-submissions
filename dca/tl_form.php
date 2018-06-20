@@ -21,13 +21,15 @@ $GLOBALS['TL_DCA']['tl_form']['list']['operations']['wem_submissions'] = array
 (
 	'label'               => &$GLOBALS['TL_LANG']['tl_form']['wem_submissions'],
 	'href'                => 'table=tl_wem_form_submission',
-	'icon'                => 'system/modules/wem-contao-form-submissions/assets/backend/icon_submissions_16.png'
+	'icon'                => 'system/modules/wem-contao-form-submissions/assets/backend/icon_submissions_16.gif',
+	'button_callback'	  => array('tl_wem_form', 'checkFormConfig'),
 );
 $GLOBALS['TL_DCA']['tl_form']['list']['operations']['wem_statistics'] = array
 (
 	'label'               => &$GLOBALS['TL_LANG']['tl_form']['wem_statistics'],
 	'href'                => 'key=wemFormStatistics',
-	'icon'                => 'system/modules/wem-contao-form-submissions/assets/backend/icon_statistics_16.png'
+	'icon'                => 'system/modules/wem-contao-form-submissions/assets/backend/icon_statistics_16.png',
+	'button_callback'	  => array('tl_wem_form', 'checkFormConfig'),
 );
 
 /**
@@ -72,9 +74,28 @@ class tl_wem_form extends tl_form
 	/**
 	 * Import the back end user object
 	 */
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		$this->import('BackendUser', 'User');
+	}
+
+	/**
+	 * Return the operation button
+	 *
+	 * @param array  $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
+	 *
+	 * @return string
+	 */
+	public function checkFormConfig($row, $href, $label, $title, $icon, $attributes){
+		if(!$row['wemStoreSubmissions'])
+			return '';
+
+		$href .= '&amp;id='.$row['id'];
+		return '<a href="'.$this->addToUrl($href).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label).'</a> ';
 	}
 }

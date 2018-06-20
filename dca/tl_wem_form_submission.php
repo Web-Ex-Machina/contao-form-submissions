@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 		'sorting' => array
 		(
 			'mode'                    => 4,
-			'fields'                  => array('sorting'),
+			'fields'                  => array('createdAt'),
 			'panelLayout'             => 'filter;search,limit',
 			'headerFields'            => array('title', 'tstamp', 'formID', 'storeValues', 'sendViaEmail', 'recipient', 'subject'),
 			'child_record_callback'   => array('tl_wem_form_submission', 'listItems')
@@ -79,7 +79,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 	// Palettes
 	'palettes' => array
 	(
-
+		'default'                     => '{general_legend},createdAt,status,tags,fields',
 	),
 
 	// Subpalettes
@@ -133,7 +133,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 			'inputType'               => 'select',
 			'options'        		  => array('created', 'seen', 'answered', 'archived'),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['status'],
-			'eval'                    => array('chosen'=>true, 'mandatory'=>true),
+			'eval'                    => array('chosen'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
 			'sql'                     => "varchar(32) NOT NULL default 'created'"
 		),
 		'tags' => array
@@ -144,7 +144,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 			'flag'                    => 1,
 			'inputType'               => 'select',
 			'options_callback'        => array('tl_wem_form_submission', 'getFormTags'),
-			'eval'                    => array('chosen'=>true, 'mandatory'=>true, 'multiple'=>true),
+			'eval'                    => array('chosen'=>true, 'multiple'=>true, 'tl_class'=>'clr'),
 			'sql'                     => "blob NULL'"
 		),
 
@@ -180,10 +180,14 @@ class tl_wem_form_submission extends Backend
 	/**
 	 * Import the back end user object
 	 */
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 	}
 
+	public function getFormTags($objDc){
+		$objFormSubmission = $this->Database->prepare("SELECT pid FROM tl_wem_form_submission WHERE id = ?")->execute($objDc->id);
+		$objForm = $this->Database->prepare("SELECT wemSubmissionTags FROM tl_form WHERE id = ?")->execute($objFormSubmission->pid);
+		return deserialize($objForm->wemSubmissionTags);
+	}
 }
