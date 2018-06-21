@@ -20,7 +20,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => true,
 		'ptable'                      => 'tl_form',
-		'ctable'					  => array('tl_wem_form_submission_field'),
+		//'ctable'					  => array('tl_wem_form_submission_field'),
 		'sql' => array
 		(
 			'keys' => array
@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 		(
 			'mode'                    => 4,
 			'fields'                  => array('createdAt'),
-			'panelLayout'             => 'filter;search,limit',
+			'panelLayout'             => 'filter;sorting,limit',
 			'headerFields'            => array('title', 'tstamp', 'formID', 'storeValues', 'sendViaEmail', 'recipient', 'subject'),
 			'child_record_callback'   => array('tl_wem_form_submission', 'listItems')
 		),
@@ -129,6 +129,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 			'default'                 => 'created',
 			'exclude'                 => true,
 			'filter'                  => true,
+			'sorting'                 => true,
 			'flag'                    => 1,
 			'inputType'               => 'select',
 			'options'        		  => array('created', 'seen', 'answered', 'archived'),
@@ -138,10 +139,8 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 		),
 		'tags' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['status'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['tags'],
 			'exclude'                 => true,
-			'filter'                  => true,
-			'flag'                    => 1,
 			'inputType'               => 'select',
 			'options_callback'        => array('tl_wem_form_submission', 'getFormTags'),
 			'eval'                    => array('chosen'=>true, 'multiple'=>true, 'tl_class'=>'clr'),
@@ -183,6 +182,10 @@ class tl_wem_form_submission extends Backend
 	public function __construct(){
 		parent::__construct();
 		$this->import('BackendUser', 'User');
+	}
+
+	public function listItems($row){
+		return sprintf('Créé le %s | %s', date('d/m/Y à H:i', $row['createdAt']), $GLOBALS['TL_LANG']['tl_wem_form_submission']['status'][$row['status']]);
 	}
 
 	public function getFormTags($objDc){

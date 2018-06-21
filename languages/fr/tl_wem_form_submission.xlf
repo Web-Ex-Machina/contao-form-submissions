@@ -1,13 +1,90 @@
 <?xml version="1.0" ?><xliff version="1.1">
   <file datatype="php" original="system/modules/wem-contao-form-submissions/languages/en/tl_wem_form_submission.php" source-language="en" target-language="fr">
     <body>
-		<trans-unit id="tl_wem_form_submission.wem_submissions.0">
-    		<source>Manage form submissions</source>
-    		<target>Gérer les soumissions du formulaire</target>
+    	<trans-unit id="tl_wem_form_submission.general_legend">
+			<source>General data</source>
+			<target>Informations générales</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_form_submission.wem_submissions.1">
-    		<source>Manage form ID %s submissions</source>
-    		<target>Gérer les soumissions du formulaire ID %s</target>
+		<trans-unit id="tl_wem_form_submission.createdAt.0">
+			<source>Created at</source>
+			<target>Créé le</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.createdAt.1">
+			<source>Enter the date where the form has been submitted.</source>
+			<target>Saisissez la date à laquelle le formulaire a été soumis.</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.status.0">
+			<source>Status</source>
+			<target>Statut</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.status.1">
+			<source>Select the current status for your next action.</source>
+			<target>Sélectionnez le statut courant pour votre prochaine action.</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.status.created">
+			<source>Created</source>
+			<target>Créé</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.status.seen">
+			<source>Seen</source>
+			<target>Vu</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.status.answered">
+			<source>Answered</source>
+			<target>Répondu</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.status.archived">
+			<source>Archived</source>
+			<target>Archivé</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.tags.0">
+			<source>Tags</source>
+			<target>Tags</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.tags.1">
+			<source>Select submission tags</source>
+			<target>Sélectionnez les tags pour cette soumission</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.fields.0">
+			<source>Values</source>
+			<target>Valeurs</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.fields.1">
+			<source>Manage the values entered by the user</source>
+			<target>Gérez les valeurs saisies par l'utilisateur</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_form_submission.new.0">
+			<source>New submission</source>
+			<target>Nouvelle soumission</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.new.1">
+			<source>Add a new submission</source>
+			<target>Ajouter une nouvelle soumission</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.edit.0">
+			<source>Edit submission</source>
+			<target>Editer la soumission</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.edit.1">
+			<source>Edit submission ID %s</source>
+			<target>Editer la soumission ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.delete.0">
+			<source>Delete submission</source>
+			<target>Supprimer la soumission</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.delete.1">
+			<source>Delete submission ID %s</source>
+			<target>Supprimer la soumission ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.show.0">
+			<source>Show submission</source>
+			<target>Afficher la soumission</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.show.1">
+			<source>Show submission ID %s</source>
+			<target>Afficher la soumission ID %s</target>
 		</trans-unit>
     </body>
   </file>

@@ -1,6 +1,28 @@
 <?xml version="1.0" ?><xliff version="1.1">
   <file datatype="php" original="src/Resources/contao/languages/en/tl_form.php" source-language="en" target-language="fr">
     <body>
+        <trans-unit id="tl_form.wem_submission_legend">
+            <source>Form submissions</source>
+            <target>Soumissions de formulaire</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemStoreSubmissions.0">
+            <source>Activate storage</source>
+            <target>Activer le stockage</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemStoreSubmissions.1">
+            <source>Check to activate the form submissions storage.</source>
+            <target>Cochez pour activer le stockage des soumissions de formulaire.</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionTags.0">
+            <source>Tags</source>
+            <target>Tags</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionTags.1">
+            <source>Enter the tags you want to use for classify your form submissions.</source>
+            <target>Saisissez les tags que vous souhaitez utiliser pour classifier les soumissions de formulaire.</target>
+        </trans-unit>
+
+
     	<trans-unit id="tl_form.wem_submissions.0">
     		<source>Manage form submissions</source>
     		<target>Gérer les soumissions du formulaire</target>
