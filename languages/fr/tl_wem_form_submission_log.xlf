@@ -1,13 +1,67 @@
 <?xml version="1.0" ?><xliff version="1.1">
   <file datatype="php" original="system/modules/wem-contao-form-submissions/languages/en/tl_wem_form_submission_log.php" source-language="en" target-language="fr">
     <body>
-		<trans-unit id="tl_wem_form_submission_log.wem_submissions.0">
-    		<source>Manage form submissions</source>
-    		<target>Gérer les soumissions du formulaire</target>
+    	<trans-unit id="tl_wem_form_submission_log.general_legend">
+			<source>General data</source>
+			<target>Informations générales</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_form_submission_log.wem_submissions.1">
-    		<source>Manage form ID %s submissions</source>
-    		<target>Gérer les soumissions du formulaire ID %s</target>
+
+		<trans-unit id="tl_wem_form_submission_log.createdAt.0">
+			<source>Created at</source>
+			<target>Créé le</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.createdAt.1">
+			<source>Enter the date where the log has been created.</source>
+			<target>Saisissez la date à laquelle le log a été créé.</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.type.0">
+			<source>Type</source>
+			<target>Type</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.type.1">
+			<source>Enter the log type.</source>
+			<target>Saisissez le type de log.</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.log.0">
+			<source>Log</source>
+			<target>Trace</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.log.1">
+			<source>Enter the log.</source>
+			<target>Saisissez la trace.</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_form_submission_log.new.0">
+			<source>New log</source>
+			<target>Nouveau log</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.new.1">
+			<source>Add a new log</source>
+			<target>Ajouter un nouveau log</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.edit.0">
+			<source>Edit log</source>
+			<target>Editer le log</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.edit.1">
+			<source>Edit log ID %s</source>
+			<target>Editer le log ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.delete.0">
+			<source>Delete log</source>
+			<target>Supprimer le log</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.delete.1">
+			<source>Delete log ID %s</source>
+			<target>Supprimer le log ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.show.0">
+			<source>Show log</source>
+			<target>Afficher le log</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_log.show.1">
+			<source>Show log ID %s</source>
+			<target>Afficher le log ID %s</target>
 		</trans-unit>
     </body>
   </file>

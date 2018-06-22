@@ -20,7 +20,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => true,
 		'ptable'                      => 'tl_form',
-		//'ctable'					  => array('tl_wem_form_submission_field'),
+		'ctable'					  => array('tl_wem_form_submission_field', 'tl_wem_form_submission_log'),
 		'sql' => array
 		(
 			'keys' => array
@@ -72,6 +72,12 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['show'],
 				'href'                => 'act=show',
 				'icon'                => 'show.svg'
+			),
+			'logs' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['logs'],
+				'href'                => 'table=tl_wem_form_submission_log',
+				'icon'                => 'editor.svg'
 			)
 		)
 	),
