@@ -20,15 +20,27 @@ class Hooks extends Controller
 {
 	/**
 	 * Load the form assets
-	 * @param  [Object] $objRow    [Database Row of the form]
-	 * @param  [String] $strBuffer [Form Buffer]
-	 * @return [String]            [Form Buffer, updated, or not, I'm a comment, not your boss.]
+	 * @param  [Array] 		$arrFields    	[Form Fields, as Array]
+	 * @param  [Integer] 	$intFormId 		[Form ID]
+	 * @param  [Object] 	$objForm 		[Form Object]
+	 * @return [Array]            			[Form Fields, updated, or not, I'm a comment, not your boss.]
 	 */
-	public function loadAssets($objRow, $strBuffer){
+	public function loadAssets($arrFields, $intFormId, $objForm){
 		// Do stuff only if we have the correct setup
-		if($objRow->wemStoreSubmissions){
-			dump("TEST");
+		if($objForm->wemStoreSubmissions){
+			$GLOBALS["TL_JAVASCRIPT"][] = 'system/modules/wem-contao-form-submissions/assets/js/functions.js';
 		}
-		//return $strBuffer;
+
+		return $arrFields;
+	}
+
+	/**
+	 * Catch AJAX Requests
+	 * @param  [Object] $objPage   [Page Model]
+	 * @param  [Object] $objLayout [Layout Model]
+	 * @param  [Object] $objPty    [Page Type Model]
+	 */
+	public function catchAjaxRequest($objPage, $objLayout, $objPty){
+		
 	}
 }
