@@ -151,4 +151,8 @@ class tl_wem_form_submission_log extends Backend
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 	}
+
+	public function listItems($row){
+		return sprintf('Créé le %s | %s | %s', date('d/m/Y à H:i:s', $row['createdAt']), $row['type'], $row['log']);
+	}
 }

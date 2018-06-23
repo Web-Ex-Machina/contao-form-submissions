@@ -18,5 +18,11 @@ $GLOBALS['BE_MOD']['content']['form']['tables'][] = 'tl_wem_form_submission_log'
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['compileFormFields'][] = array('WEM\Form\Hooks', 'loadAssets');
 $GLOBALS['TL_HOOKS']['getPageLayout'][] = array('WEM\Form\Hooks', 'catchAjaxRequest');
+
+/**
+ * Models
+ */
+$GLOBALS['TL_MODELS'][\WEM\Form\Model\Submission::getTable()] = 'WEM\Form\Model\Submission';
+$GLOBALS['TL_MODELS'][\WEM\Form\Model\Field::getTable()] = 'WEM\Form\Model\Field';
+$GLOBALS['TL_MODELS'][\WEM\Form\Model\Log::getTable()] = 'WEM\Form\Model\Log';
