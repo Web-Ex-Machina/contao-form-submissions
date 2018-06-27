@@ -50,6 +50,9 @@ class wemForm{
 
 		wemForm.el.bind('submit', function(e){
 			e.preventDefault();
+			// prevent any additional submission while processing
+			wemForm.el.find('.submit').bind('click',function(e){e.preventDefault()});
+
 			wemForm.logs.push({
 				"createdAt": Math.floor(Date.now() / 1000)
 				,"type": "submit"
@@ -65,6 +68,10 @@ class wemForm{
 					wemForm.el.unbind('submit');
 					wemForm.el.submit();
 				});
+			}).catch(function(data){
+				console.log("Submission failed: "+data);
+				// allow user to submit again
+				wemForm.el.find('.submit').unbind('click');
 			});
 		});
 	}
@@ -98,7 +105,7 @@ class wemForm{
 		return new Promise(function(resolve,reject){
 			if(0 == wemForm.logs.length)
 				reject("Aucun logs");
-			
+
 			$.post(
 				window.location.pathname
 				,{
