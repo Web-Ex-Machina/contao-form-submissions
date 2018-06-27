@@ -19,6 +19,8 @@ $GLOBALS['BE_MOD']['content']['form']['tables'][] = 'tl_wem_form_submission_log'
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['getPageLayout'][] = array('WEM\Form\Hooks', 'catchAjaxRequest');
+$GLOBALS['TL_HOOKS']['compileFormFields'][] = array('WEM\Form\Hooks', 'addHiddenFields');
+$GLOBALS['TL_HOOKS']['prepareFormData'][] = array('WEM\Form\Hooks', 'storeFormLogs');
 
 /**
  * Models
