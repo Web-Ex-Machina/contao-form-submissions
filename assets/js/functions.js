@@ -47,7 +47,8 @@ class wemForm{
 		})
 		.bind('keyup change',function(e){
 			// register fields values from user inputs
-			wemForm.fields[parseInt($(this).attr('id').replace('ctrl_', ''))] = $(this).val();
+			// wemForm.fields[parseInt($(this).attr('id').replace('ctrl_', ''))] = $(this).val();
+			wemForm.fields[parseInt($(this).attr('id').split('_')[1])] = $(this).val();
 		});
 
 		wemForm.el.bind('submit', function(e){
