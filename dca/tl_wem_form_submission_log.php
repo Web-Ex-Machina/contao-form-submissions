@@ -36,9 +36,9 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_log'] = array
 		'sorting' => array
 		(
 			'mode'                    => 4,
-			'fields'                  => array('tstamp'),
+			'fields'                  => array('createdAt'),
 			'panelLayout'             => 'filter;search,limit',
-			'headerFields'            => array('title', 'tstamp', 'formID', 'storeValues', 'sendViaEmail', 'recipient', 'subject'),
+			'headerFields'            => array('createdAt', 'status'),
 			'child_record_callback'   => array('tl_wem_form_submission_log', 'listItems')
 		),
 		'global_operations' => array

@@ -38,8 +38,9 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_field'] = array
 			'mode'                    => 4,
 			'fields'                  => array('tstamp'),
 			'panelLayout'             => 'filter;search,limit',
-			'headerFields'            => array('title', 'tstamp', 'formID', 'storeValues', 'sendViaEmail', 'recipient', 'subject'),
-			'child_record_callback'   => array('tl_wem_form_submission_field', 'listItems')
+			'headerFields'            => array('createdAt', 'status'),
+			'child_record_callback'   => array('tl_wem_form_submission_field', 'listItems'),
+			'disableGrouping'		  => true
 		),
 		'global_operations' => array
 		(
@@ -110,6 +111,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_field'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission_field']['field'],
 			'inputType'               => 'select',
 			'options_callback'        => array('tl_wem_form_submission_field', 'getFormFields'),
+			'foreignKey'              => 'tl_form_field.name',
 			'eval'                    => array('mandatory'=>true, 'chosen'=>true, 'doNotCopy'=>true, 'tl_class'=>'w50 wizard'),
 			'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		),
@@ -157,4 +159,8 @@ class tl_wem_form_submission_field extends Backend
 		return $arrFields;
 	}
 
+	public function listItems($row){
+		$objField = \FormFieldModel::findByPk($row['field']);
+		return sprintf('%s | %s', $objField->name, $row['value']);
+	}
 }

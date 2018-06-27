@@ -37,6 +37,10 @@
 			<source>Archived</source>
 			<target>Archivé</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.status.aborted">
+			<source>Aborted</source>
+			<target>Annulée</target>
+		</trans-unit>
 		<trans-unit id="tl_wem_form_submission.tags.0">
 			<source>Tags</source>
 			<target>Tags</target>
@@ -52,6 +56,15 @@
 		<trans-unit id="tl_wem_form_submission.fields.1">
 			<source>Manage the values entered by the user</source>
 			<target>Gérez les valeurs saisies par l'utilisateur</target>
+		</trans-unit>
+		
+		<trans-unit id="tl_wem_form_submission.tstamp.0">
+			<source>Revision date</source>
+			<target>Date de révision</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.tstamp.1">
+			<source>Date and time of the latest revision</source>
+			<target>Date et heure de la dernière révision</target>
 		</trans-unit>
 
 		<trans-unit id="tl_wem_form_submission.new.0">
@@ -85,6 +98,14 @@
 		<trans-unit id="tl_wem_form_submission.show.1">
 			<source>Show submission ID %s</source>
 			<target>Afficher la soumission ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.logs.0">
+			<source>Show submission's logs</source>
+			<target>Afficher les logs de la soumission</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.logs.1">
+			<source>Show submission's logs ID %s</source>
+			<target>Afficher les logs de la soumission ID %s</target>
 		</trans-unit>
     </body>
   </file>
