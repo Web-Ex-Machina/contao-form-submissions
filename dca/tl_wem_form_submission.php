@@ -138,7 +138,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 			'sorting'                 => true,
 			'flag'                    => 1,
 			'inputType'               => 'select',
-			'options'        		  => array('created', 'seen', 'answered', 'archived'),
+			'options'        		  => array('created', 'seen', 'answered', 'archived', 'aborted'),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['status'],
 			'eval'                    => array('chosen'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
 			'sql'                     => "varchar(32) NOT NULL default 'created'"
