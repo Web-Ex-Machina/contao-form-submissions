@@ -28,14 +28,13 @@ class wemForm{
 		var wemForm = this
 		wemForm.formID = formID;
 		wemForm.el = $(form);
-		wemForm.fields = {};
 		wemForm.logs = [];
 
 		wemForm.el.find('input, select, textarea').bind('focus', function(e){
 			wemForm.logs.push({
 				"createdAt": Math.floor(Date.now() / 1000)
 				,"type": "focus"
-				,"log": "L'utilisateur a sélectionné le champ "+$(this).attr('name')
+				,"log": "L'utilisateur a sélectionné le champ "+$(this).attr('name')+" avec la valeur : "+$(this).val()
 			});
 		})
 		.bind('blur',function(e){
@@ -44,8 +43,6 @@ class wemForm{
 				,"type": "blur"
 				,"log": "L'utilisateur est sorti du champ : "+$(this).attr('name')+" avec la valeur : "+$(this).val()
 			});
-
-			wemForm.fields[parseInt($(this).attr('id').replace('ctrl_', ''))] = $(this).val();
 		});
 
 		wemForm.el.bind('submit', function(e){
@@ -59,72 +56,10 @@ class wemForm{
 				,"log": "L'utilisateur a validé le formulaire"
 			});
 
-			wemForm.storeSubmission().then(function(data){
-				wemForm.submissionID = data.submission;
-				console.log(data);
-
-				wemForm.storeLogs().then(function(data){
-					console.log(data);
-					wemForm.el.unbind('submit');
-					wemForm.el.submit();
-				});
-			}).catch(function(data){
-				console.log("Submission failed: "+data);
-				// allow user to submit again
-				wemForm.el.find('.submit').unbind('click');
-			});
-		});
-	}
-
-	storeSubmission() {
-		var wemForm = this;
-		return new Promise(function(resolve,reject){
-			$.post(
-				window.location.pathname
-				,{
-					"TL_AJAX": 1
-					,"REQUEST_TOKEN": wemForm.el.find('input[name="REQUEST_TOKEN"]').first().attr('value')
-					,"module": "wem-contao-form-submissions"
-					,"form": wemForm.formID
-					,"action": "submit"
-					,"fields":wemForm.fields
-				}
-				,function(data){
-					if("success" != data.status)
-						reject(data.msg);
-					else
-						resolve(data);
-				}
-				,"json"
-			);
-		});
-	}
-
-	storeLogs() {
-		var wemForm = this;
-		return new Promise(function(resolve,reject){
-			if(0 == wemForm.logs.length)
-				reject("Aucun logs");
-
-			$.post(
-				window.location.pathname
-				,{
-					"TL_AJAX": 1
-					,"REQUEST_TOKEN": wemForm.el.find('input[name="REQUEST_TOKEN"]').first().attr('value')
-					,"module": "wem-contao-form-submissions"
-					,"form": wemForm.formID
-					,"submission": wemForm.submissionID
-					,"action": "log"
-					,"logs":wemForm.logs
-				}
-				,function(data){
-					if("success" != data.status)
-						reject(data.msg);
-					else
-						resolve(data);
-				}
-				,"json"
-			);
+			wemForm.el.find('input[name="wem_tracker_logs"]').first().attr('value', JSON.stringify(wemForm.logs));
+			
+			wemForm.el.unbind('submit');
+			wemForm.el.submit();
 		});
 	}
 }
