@@ -57,6 +57,22 @@
 			<source>Manage the values entered by the user</source>
 			<target>Gérez les valeurs saisies par l'utilisateur</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.ip.0">
+			<source>IP</source>
+			<target>IP</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.ip.1">
+			<source>Enter the IP of the user.</source>
+			<target>Saisissez l'IP de l'utilisateur.</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.token.0">
+			<source>Token</source>
+			<target>Token</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.token.1">
+			<source>Enter the token of the user.</source>
+			<target>Saisissez le token de l'utilisateur.</target>
+		</trans-unit>
 		
 		<trans-unit id="tl_wem_form_submission.tstamp.0">
 			<source>Revision date</source>

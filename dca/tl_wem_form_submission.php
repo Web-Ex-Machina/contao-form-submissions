@@ -111,8 +111,16 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 		(
 			'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		),
+		'ip' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['ip'],
+			'filter'                  => true,
+			'eval'                    => array('doNotCopy'=>true),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
 		'token' => array
 		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['token'],
 			'eval'                    => array('unique'=>true, 'doNotCopy'=>true),
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),

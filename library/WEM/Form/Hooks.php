@@ -56,6 +56,7 @@ class Hooks extends Controller
 						$objSubmission->pid = $objForm->id;
 						$objSubmission->createdAt = time();
 						$objSubmission->status = "aborted";
+						$objSubmission->ip = \Environment::get('ip');
 						$objSubmission->token = md5(uniqid(mt_rand(), true));
 
 						// Stop the function if an error occured in the Model save
@@ -158,6 +159,7 @@ class Hooks extends Controller
 		$objSubmission->pid = $objForm->id;
 		$objSubmission->createdAt = time();
 		$objSubmission->status = "created";
+		$objSubmission->ip = \Environment::get('ip');
 		$objSubmission->token = md5(uniqid(mt_rand(), true));
 
 		if(!$objSubmission->save())
