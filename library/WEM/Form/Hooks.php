@@ -50,16 +50,13 @@ class Hooks extends Controller
 					break;
 					// In case the user doesn't finish to fill the form, we still store the data and the "not submit until the end" stuff
 					case "abortSubmission":
-						// Break if we don't have fields. We still want to store something.
-						if(!Input::post("fields") || empty(Input::post("fields")))
-							throw new Exception("Pas de champs envoyés");
-
 						// Create the submission, with a special status
 						$objSubmission = new Submission();
 						$objSubmission->tstamp = time();
 						$objSubmission->pid = $objForm->id;
 						$objSubmission->createdAt = time();
 						$objSubmission->status = "aborted";
+						$objSubmission->ip = \Environment::get('ip');
 						$objSubmission->token = md5(uniqid(mt_rand(), true));
 
 						// Stop the function if an error occured in the Model save
@@ -68,15 +65,17 @@ class Hooks extends Controller
 
 						// Store the fields
 						$j = 0;
-						foreach(Input::post("fields") as $field => $value){
-							$objField = new Field();
-							$objField->tstamp = time();
-							$objField->pid = intval($objSubmission->id);
-							$objField->field = $field;
-							$objField->value = $value;
+						if(Input::post("fields") && !empty(Input::post("fields"))){
+							foreach(Input::post("fields") as $field => $value){
+								$objField = new Field();
+								$objField->tstamp = time();
+								$objField->pid = intval($objSubmission->id);
+								$objField->field = $field;
+								$objField->value = $value;
 
-							if($objField->save())
-								$j++;
+								if($objField->save())
+									$j++;
+							}
 						}
 
 						// Store the logs if there is any
@@ -160,6 +159,7 @@ class Hooks extends Controller
 		$objSubmission->pid = $objForm->id;
 		$objSubmission->createdAt = time();
 		$objSubmission->status = "created";
+		$objSubmission->ip = \Environment::get('ip');
 		$objSubmission->token = md5(uniqid(mt_rand(), true));
 
 		if(!$objSubmission->save())
