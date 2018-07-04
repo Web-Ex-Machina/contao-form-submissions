@@ -1,0 +1,88 @@
+<div id="tl_buttons">
+	<a href="<?= ampersand(str_replace('&key=wemFormStatistics', '', \Environment::get('request'))) ?>" class="header_back" title="<?= specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) ?>" accesskey="b"><?= $GLOBALS['TL_LANG']['MSC']['backBT'] ?></a>
+</div>
+<?= \Message::generate() ?>
+<?php if(!$this->isError): ?>
+<form action="<?= ampersand(\Environment::get('request'), true) ?>" id="tl_wem_form_submissions_filter" class="tl_form" method="post" enctype="multipart/form-data">
+	<div class="tl_formbody_edit">
+		<input type="hidden" name="FORM_SUBMIT" value="tl_wem_form_submissions_filter">
+		<input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN ?>">
+	</div>
+	<fieldset class="tl_tbox nolegend">
+		<div class="w50 wizard widget">
+			<h3><label for="ctrl_start">Date de début</label></h3>
+			<input name="date" id="ctrl_start" class="tl_text" onfocus="Backend.getScrollOffset()" type="text">
+			<img src="assets/datepicker/images/icon.svg" alt="" title="" id="toggle_date_start" style="cursor:pointer" width="20" height="20" />
+			<script>
+			window.addEvent("domready", function() {
+				new Picker.Date($("ctrl_start"), {
+				draggable: false,
+				toggle: $("toggle_date_start"),
+				format: "%d/%m/%Y",
+				positionOffset: {x:-211,y:-209},
+				pickerClass: "datepicker_bootstrap",
+				useFadeInOut: !Browser.ie,
+				startDay: 0,
+				titleFormat: "%B %d%o, %Y"
+				});
+			});
+			</script>
+			<p class="tl_help tl_tip" title="">Laisser à vide pour ne pas avoir de date de début.</p>
+		</div>
+		<div class="w50 wizard widget">
+			<h3><label for="ctrl_stop">Date de fin</label></h3>
+			<input name="date" id="ctrl_stop" class="tl_text" onfocus="Backend.getScrollOffset()" type="text"><img src="assets/datepicker/images/icon.svg" alt="" title="" id="toggle_date_stop" style="cursor:pointer" width="20" height="20">
+			<script>
+			window.addEvent("domready", function() {
+				new Picker.Date($("ctrl_stop"), {
+				draggable: false,
+				toggle: $("toggle_date_stop"),
+				format: "%d/%m/%Y",
+				positionOffset: {x:-211,y:-209},
+				pickerClass: "datepicker_bootstrap",
+				useFadeInOut: !Browser.ie,
+				startDay: 0,
+				titleFormat: "%B %d%o, %Y"
+				});
+			});
+			</script>
+			<p class="tl_help tl_tip" title="">Laisser à vide pour ne pas avoir de date de fin.</p>
+		</div>
+	</fieldset>
+	<div class="tl_formbody_submit">
+		<div class="tl_submit_container">
+		  <input type="submit" name="filter" id="filter" class="tl_submit" accesskey="s" value="Filtrer">
+		</div>
+	</div>
+</form>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<div class="widget">
+	<h3>Nombre de formulaires envoyés, par mois et par status</h3>
+	<canvas id="nbFormsChart"  width="400" height="200"></canvas>
+</div>
+<script>
+var nbFormsChart = document.getElementById("nbFormsChart").getContext('2d');
+var nbFormsChart = new Chart(nbFormsChart, {
+    type: 'bar',
+    data: {
+        labels: <?= $this->labels ?>,
+        datasets: <?= $this->datasets ?>
+    },
+    options: {
+        scales: {
+        	xAxes: [{
+                time: {
+                    unit: 'month'
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>
+<?php endif; ?>

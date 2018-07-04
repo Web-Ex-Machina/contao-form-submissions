@@ -14,6 +14,7 @@
 $GLOBALS['BE_MOD']['content']['form']['tables'][] = 'tl_wem_form_submission';
 $GLOBALS['BE_MOD']['content']['form']['tables'][] = 'tl_wem_form_submission_field';
 $GLOBALS['BE_MOD']['content']['form']['tables'][] = 'tl_wem_form_submission_log';
+$GLOBALS['BE_MOD']['content']['form']['wemFormStatistics'] = array('WEM\Form\Backend\Callback', 'displayStatistics');
 
 /**
  * Hooks

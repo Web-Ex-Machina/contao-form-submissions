@@ -19,7 +19,7 @@ if (class_exists('NamespaceClassLoader'))
 /**
  * Register the templates
  */
-// TemplateLoader::addFiles(array
-// (
-	// 'xxx'	=> 'system/modules/wem-contao-form-submissions/templates/modules',
-// ));
+TemplateLoader::addFiles(array
+(
+	'mod_wem_form_submissions_statistics' => 'system/modules/wem-contao-form-submissions/templates/backend',
+));
