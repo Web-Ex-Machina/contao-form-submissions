@@ -11,7 +11,7 @@
 	<fieldset class="tl_tbox nolegend">
 		<div class="w50 wizard widget">
 			<h3><label for="ctrl_start">Date de début</label></h3>
-			<input name="date" id="ctrl_start" class="tl_text" onfocus="Backend.getScrollOffset()" type="text">
+			<input name="ctrl_start" id="ctrl_start" value="<?= $this->ctrl_start ?>" class="tl_text" onfocus="Backend.getScrollOffset()" type="text">
 			<img src="assets/datepicker/images/icon.svg" alt="" title="" id="toggle_date_start" style="cursor:pointer" width="20" height="20" />
 			<script>
 			window.addEvent("domready", function() {
@@ -31,7 +31,7 @@
 		</div>
 		<div class="w50 wizard widget">
 			<h3><label for="ctrl_stop">Date de fin</label></h3>
-			<input name="date" id="ctrl_stop" class="tl_text" onfocus="Backend.getScrollOffset()" type="text"><img src="assets/datepicker/images/icon.svg" alt="" title="" id="toggle_date_stop" style="cursor:pointer" width="20" height="20">
+			<input name="ctrl_stop" id="ctrl_stop" value="<?= $this->ctrl_stop ?>" class="tl_text" onfocus="Backend.getScrollOffset()" type="text"><img src="assets/datepicker/images/icon.svg" alt="" title="" id="toggle_date_stop" style="cursor:pointer" width="20" height="20">
 			<script>
 			window.addEvent("domready", function() {
 				new Picker.Date($("ctrl_stop"), {
@@ -57,17 +57,23 @@
 </form>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
-<div class="widget">
-	<h3>Nombre de formulaires envoyés, par mois et par status</h3>
-	<canvas id="nbFormsChart"  width="400" height="200"></canvas>
+<div class="charts">
+	<div class="chart">
+		<h3>Nombre de formulaires envoyés, par mois et par statut</h3>
+		<canvas id="nbFormsChart"></canvas>
+	</div>
+	<div class="chart">
+		<h3>Répartion des formulaires, par statut</h3>
+		<canvas id="pieChart1"></canvas>
+	</div>
 </div>
 <script>
 var nbFormsChart = document.getElementById("nbFormsChart").getContext('2d');
 var nbFormsChart = new Chart(nbFormsChart, {
     type: 'bar',
     data: {
-        labels: <?= $this->labels ?>,
-        datasets: <?= $this->datasets ?>
+        labels: <?= $this->months ?>,
+        datasets: <?= $this->chart1_datasets ?>
     },
     options: {
         scales: {
@@ -83,6 +89,15 @@ var nbFormsChart = new Chart(nbFormsChart, {
             }]
         }
     }
+});
+
+var pieChart1 = document.getElementById("pieChart1").getContext('2d');
+var pieChart1 = new Chart(pieChart1,{
+    type: 'pie',
+    data: {
+        labels: <?= $this->status ?>,
+        datasets: <?= $this->chart2_datasets ?>
+    },
 });
 </script>
 <?php endif; ?>

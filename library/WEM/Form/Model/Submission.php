@@ -105,11 +105,11 @@ class Submission extends Model
 				$arrColumns[] = "($t.date >= ". $arrConfig["date_start"]." ".$arrConfig["date_operator"]." $t.date <= ". $arrConfig["date_stop"].")";
 			}
 			else{
-				if($arrConfig["date_start"])
-					$arrColumns[] = "$t.date >= ". $arrConfig["date_start"];
+				if($arrConfig["createdAt_start"])
+					$arrColumns[] = "$t.createdAt >= ". $arrConfig["createdAt_start"];
 
-				if($arrConfig["date_stop"])
-					$arrColumns[] = "$t.date <= ". $arrConfig["date_stop"];
+				if($arrConfig["createdAt_stop"])
+					$arrColumns[] = "$t.createdAt <= ". $arrConfig["createdAt_stop"];
 			}
 
 			if($arrConfig["status"])

@@ -12,8 +12,10 @@ namespace WEM\Form\Backend;
 
 use Exception;
 use Contao\Backend;
+use Contao\Date;
 use Contao\BackendTemplate;
 use Contao\FormModel;
+use Haste\Input\Input;
 
 use WEM\Form\Model\Submission;
 use WEM\Form\Model\Field;
@@ -52,64 +54,82 @@ class Callback extends Backend
 			if(!$objDc || !$objDc->id || !$objForm = FormModel::findByPk($objDc->id))
 				throw new Exception("No data found for the form");
 
+			// Adjust the config if there is filters
+			$intStart = 0;
+			$intStop = 0;
+
+			if(Input::post('ctrl_start')){
+				$objDate = new Date(Input::post('ctrl_start'), 'd/m/Y');
+				$intStart = $objDate->timestamp;
+				$objTemplate->ctrl_start = Input::post('ctrl_start');
+			}
+
+			if(Input::post('ctrl_stop')){
+				$objDate = new Date(Input::post('ctrl_stop'), 'd/m/Y');
+				$intStop = $objDate->timestamp;
+				$objTemplate->ctrl_stop = Input::post('ctrl_stop');
+			}
+
 			// Get all the submissions
-			$objSubmissions = Submission::findItems(["pid"=>$objForm->id]);
+			$objSubmissions = Submission::findItems(["pid"=>$objForm->id, "createdAt_start"=>$intStart, "createdAt_stop"=>$intStop]);
 
 			// Break if there is no submissions
 			if(null == $objSubmissions || 0 == $objSubmissions->count())
 				throw new Exception(sprintf("No submissions yet for the form %s", $objForm->id));
-
-			$arrTmp = [];
-			while($objSubmissions->next()){
-				
-				if(!array_key_exists($objSubmissions->status, $arrTmp))
-					$arrTmp[$objSubmissions->status] = [];
-				
-				$strDate = date('Y m', $objSubmissions->createdAt);
-				if(!array_key_exists($strDate, $arrTmp[$objSubmissions->status]))
-					$arrTmp[$objSubmissions->status][$strDate] = 0;
-
-				$arrTmp[$objSubmissions->status][$strDate]++;
-			}
-
+			
+			// Load language files
 			\System::loadLanguageFile('tl_wem_form_submission');
 
 			// Organize data by status
-			$arrDatasets = [];
-			$arrLabels = [];
-			
-			// Format datasets
-			foreach($arrTmp as $strStatus => $arrMonths){
-				$arrDataset = [
-					"label" => $GLOBALS['TL_LANG']['tl_wem_form_submission']['status'][$strStatus]
-					,"data" => []
-					,"backgroundColor" => static::$arrStatusColors[$strStatus]
-				];
-				
-				foreach($arrMonths as $strMonth => $nbItems){
-					if(!in_array($strMonth, $arrLabels))
-						$arrLabels[] = $strMonth;
+			$arrStatus = [];
+			$arrMonths = [];
+			$arrChart1 = ['datasets'=>[]];
+			$arrChart2 = ['datasets'=>[0=>["data"=>[],"backgroundColor"=>[]]]];
 
-					$arrDataset["data"][] = $nbItems;
+			while($objSubmissions->next()){
+				if(!in_array($GLOBALS['TL_LANG']['tl_wem_form_submission']['status'][$objSubmissions->status], $arrStatus))
+					$arrStatus[] = $GLOBALS['TL_LANG']['tl_wem_form_submission']['status'][$objSubmissions->status];
+
+				$strDate = date('m/Y', $objSubmissions->createdAt);
+				if(!in_array($strDate, $arrMonths))
+					$arrMonths[] = $strDate;
+
+				$k1 = array_search($GLOBALS['TL_LANG']['tl_wem_form_submission']['status'][$objSubmissions->status], $arrStatus);
+				$k2 = array_search($strDate, $arrMonths);
+
+				if(!array_key_exists($k1, $arrChart1['datasets'])){
+					$arrChart1['datasets'][$k1] = [
+						"label" => $arrStatus[$k1]
+						,"data" => []
+						,"backgroundColor" => static::$arrStatusColors[$objSubmissions->status]
+					];
 				}
 
-				$arrDatasets[] = $arrDataset;
-			}
+				if(!array_key_exists($k2, $arrChart1['datasets'][$k1]["data"]))
+					$arrChart1['datasets'][$k1]["data"][$k2] = 0;
+				$arrChart1['datasets'][$k1]["data"][$k2]++;
 
-			// Reformat labels depending on the current language
-			foreach($arrLabels as $intKey => $strLabel){
-				$objDate = new \Date($strLabel, "Y m");
-				$arrLabels[$intKey] = date("m/Y", $objDate->timestamp);
+				if(!array_key_exists($k1, $arrChart2['datasets'][0]['data'])){
+					$arrChart2['datasets'][0]['data'][$k1] = 0;
+					$arrChart2['datasets'][0]['backgroundColor'][$k1] = static::$arrStatusColors[$objSubmissions->status];
+				}
+				$arrChart2['datasets'][0]['data'][$k1]++;
 			}
 
 			// Send data to template
-			$objTemplate->labels = json_encode($arrLabels);
-			$objTemplate->datasets = json_encode($arrDatasets);
+			$objTemplate->chart1_datasets = json_encode($arrChart1['datasets']);
+			$objTemplate->chart2_datasets = json_encode($arrChart2['datasets']);
+
+			$objTemplate->status = json_encode($arrStatus);
+			$objTemplate->months = json_encode($arrMonths);
 		}
 		catch(Exception $e){
 			$objTemplate->isError = true;
 			\Message::addError(sprintf("Error found : %s", $e->getMessage()));
 		}
+
+		// Add WEM styles to template
+		$GLOBALS['TL_CSS'][] = 'system/modules/wem-contao-form-submissions/assets/backend/style.css';
 
 		return $objTemplate->parse();
 	}
