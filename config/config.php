@@ -14,6 +14,7 @@
 $GLOBALS['BE_MOD']['content']['form']['tables'][] = 'tl_wem_form_submission';
 $GLOBALS['BE_MOD']['content']['form']['tables'][] = 'tl_wem_form_submission_field';
 $GLOBALS['BE_MOD']['content']['form']['tables'][] = 'tl_wem_form_submission_log';
+$GLOBALS['BE_MOD']['content']['form']['tables'][] = 'tl_wem_form_submission_answer';
 $GLOBALS['BE_MOD']['content']['form']['wemFormStatistics'] = array('WEM\Form\Backend\Callback', 'displayStatistics');
 
 /**
@@ -30,3 +31,28 @@ $GLOBALS['TL_HOOKS']['executePostActions'][] = array('WEM\Form\Backend\Callback'
 $GLOBALS['TL_MODELS'][\WEM\Form\Model\Submission::getTable()] = 'WEM\Form\Model\Submission';
 $GLOBALS['TL_MODELS'][\WEM\Form\Model\Field::getTable()] = 'WEM\Form\Model\Field';
 $GLOBALS['TL_MODELS'][\WEM\Form\Model\Log::getTable()] = 'WEM\Form\Model\Log';
+$GLOBALS['TL_MODELS'][\WEM\Form\Model\Answer::getTable()] = 'WEM\Form\Model\Answer';
+
+/**
+ * Notifications
+ */
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['wem_form_submission']['new_forms'] = array(
+	'recipients'			=> array('admin_email'),
+	'email_subject'			=> array('form_*'),
+	'email_text'			=> array('form_*', 'nbForms'),
+	'email_html'			=> array('form_*', 'nbForms'),
+	'email_sender_name'		=> array('admin_email', 'form_*'),
+	'email_sender_address'	=> array('admin_email', 'form_*'),
+	'email_recipient_cc'	=> array('admin_email', 'form_*'),
+	'email_recipient_bcc'	=> array('admin_email', 'form_*'),
+);
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['wem_form_submission']['new_answer'] = array(
+	'recipients'			=> array('email'),
+	'email_subject'			=> array('form_*'),
+	'email_text'			=> array('form_*', 'answer_*'),
+	'email_html'			=> array('form_*', 'answer_*'),
+	'email_sender_name'		=> array('sender_*', 'form_*'),
+	'email_sender_address'	=> array('sender_*', 'form_*'),
+	'email_recipient_cc'	=> array('sender_*', 'form_*'),
+	'email_recipient_bcc'	=> array('sender_*', 'form_*'),
+);

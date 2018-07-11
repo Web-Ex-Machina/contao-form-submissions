@@ -22,6 +22,39 @@
             <target>Saisissez les tags que vous souhaitez utiliser pour classifier les soumissions de formulaire.</target>
         </trans-unit>
 
+        <trans-unit id="tl_form.wemSubmissionSummaryNotification.0">
+            <source>Summary notification</source>
+            <target>Notification récapitulative</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionSummaryNotification.1">
+            <source>Select the notification you want to send as a summary of submissions to treat.</source>
+            <target>Sélectionnez la notification que vous souhaitez envoyer comme récapitulatif des soumissions à traiter.</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionSummaryNotificationFrequency.0">
+            <source>Summary frequency</source>
+            <target>Fréquence des récapitulatifs</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionSummaryNotificationFrequency.1">
+            <source>Select the frequency of emission of this notification.</source>
+            <target>Sélectionnez la fréquence d'envoi de cette notification.</target>
+        </trans-unit>
+
+        <trans-unit id="tl_form.wemSubmissionMessages.0">
+            <source>Activate messages</source>
+            <target>Activer les messages</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionMessages.1">
+            <source>Check to activate the form submissions messages.</source>
+            <target>Cochez pour activer la messagerie des soumissions de formulaire.</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionMessageNotification.0">
+            <source>Message notification</source>
+            <target>Notification de message</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionMessageNotification.1">
+            <source>Select the notification you want to send when a new message is created.</source>
+            <target>Sélectionnez la notification que vous souhaitez envoyer lorsqu'un nouveau message est créé.</target>
+        </trans-unit>
 
     	<trans-unit id="tl_form.wem_submissions.0">
     		<source>Manage form submissions</source>

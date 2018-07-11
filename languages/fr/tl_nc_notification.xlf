@@ -1,0 +1,27 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-contao-form-submissions/languages/en/tl_nc_notification.php" source-language="en" target-language="fr">
+    <body>
+    	<trans-unit id="tl_nc_notification.type.wem_form_submission">
+			<source>Form submissions (WEM)</source>
+			<target>Soumissions de formulaire (WEM)</target>
+		</trans-unit>
+
+		<trans-unit id="tl_nc_notification.type.new_forms.0">
+			<source>List of submissions to treat</source>
+			<target>Liste des soumissions à traiter</target>
+		</trans-unit>
+		<trans-unit id="tl_nc_notification.type.new_forms.1">
+			<source>Summary of submissions to be processed, sent manually or via recurring task (cronjob).</source>
+			<target>Récapitulatif des soumissions à traiter, envoyé manuellement ou via tâche récurrente (cronjob).</target>
+		</trans-unit>
+		<trans-unit id="tl_nc_notification.type.new_answer.0">
+			<source>New answer</source>
+			<target>Nouvelle réponse</target>
+		</trans-unit>
+		<trans-unit id="tl_nc_notification.type.new_answer.1">
+			<source>Sent when the user or admin answer to a submission.</source>
+			<target>Envoyée lorsque l'utilisateur ou l'administrateur répond à une soumission.</target>
+		</trans-unit>
+	</body>
+  </file>
+</xliff>

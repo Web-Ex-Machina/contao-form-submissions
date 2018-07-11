@@ -21,7 +21,8 @@
         "phpoffice/phpspreadsheet": "~1.2",
         "contao/core-bundle": "~3.2 || ~4.1",
         "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
-        "terminal42/dcawizard":"2.*"
+        "terminal42/dcawizard":"2.*",
+        "terminal42/notification_center":"~1.4"
     },
     "autoload":{
         "psr-0": {

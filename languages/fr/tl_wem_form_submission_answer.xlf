@@ -1,0 +1,68 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-contao-form-submissions/languages/en/tl_wem_form_submission_answer.php" source-language="en" target-language="fr">
+    <body>
+    	<trans-unit id="tl_wem_form_submission_answer.general_legend">
+			<source>General data</source>
+			<target>Informations générales</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_form_submission_answer.createdAt.0">
+			<source>Created at</source>
+			<target>Créé le</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.createdAt.1">
+			<source>Enter the date where the message has been created.</source>
+			<target>Saisissez la date à laquelle le message a été créé.</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.author.0">
+			<source>Author</source>
+			<target>Auteur</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.author.1">
+			<source>Enter the message author.</source>
+			<target>Saisissez l'auteur du message.</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.message.0">
+			<source>Message</source>
+			<target>Message</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.message.1">
+			<source>Enter the message.</source>
+			<target>Saisissez le message.</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_form_submission_answer.new.0">
+			<source>New message</source>
+			<target>Nouveau message</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.new.1">
+			<source>Add a new message</source>
+			<target>Ajouter un nouveau message</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.edit.0">
+			<source>Edit message</source>
+			<target>Editer le message</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.edit.1">
+			<source>Edit message ID %s</source>
+			<target>Editer le message ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.delete.0">
+			<source>Delete message</source>
+			<target>Supprimer le message</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.delete.1">
+			<source>Delete message ID %s</source>
+			<target>Supprimer le message ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.show.0">
+			<source>Show message</source>
+			<target>Afficher le message</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.show.1">
+			<source>Show message ID %s</source>
+			<target>Afficher le message ID %s</target>
+		</trans-unit>
+    </body>
+  </file>
+</xliff>

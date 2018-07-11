@@ -123,6 +123,14 @@
 			<source>Show submission's logs ID %s</source>
 			<target>Afficher les logs de la soumission ID %s</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.messages.0">
+			<source>Show submission's messages</source>
+			<target>Afficher les messages de la soumission</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission.messages.1">
+			<source>Show submission's messages ID %s</source>
+			<target>Afficher les messages de la soumission ID %s</target>
+		</trans-unit>
     </body>
   </file>
 </xliff>

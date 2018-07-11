@@ -36,12 +36,14 @@ $GLOBALS['TL_DCA']['tl_form']['list']['operations']['wem_statistics'] = array
  * Update tl_form palettes
  */
 $GLOBALS['TL_DCA']['tl_form']['palettes']['__selector__'][] = 'wemStoreSubmissions';
+$GLOBALS['TL_DCA']['tl_form']['palettes']['__selector__'][] = 'wemSubmissionMessages';
 $GLOBALS['TL_DCA']['tl_form']['palettes']['default'] .= ';{wem_submission_legend},wemStoreSubmissions';
 
 /**
  * Update tl_form subpalettes
  */
-$GLOBALS['TL_DCA']['tl_form']['subpalettes']['wemStoreSubmissions'] = 'wemSubmissionTags';
+$GLOBALS['TL_DCA']['tl_form']['subpalettes']['wemStoreSubmissions'] = 'wemSubmissionTags,wemSubmissionSummaryNotification,wemSubmissionSummaryNotificationFrequency,wemSubmissionMessages';
+$GLOBALS['TL_DCA']['tl_form']['subpalettes']['wemSubmissionMessages'] = 'wemSubmissionMessageNotification';
 
 /**
  * Update tl_form fields
@@ -62,6 +64,44 @@ $GLOBALS['TL_DCA']['tl_form']['fields']['wemSubmissionTags'] = array
 	'inputType'               => 'listWizard',
 	'eval'                    => array('allowHtml'=>true, 'tl_class'=>'clr'),
 	'sql'                     => "blob NULL"
+);
+
+$GLOBALS['TL_DCA']['tl_form']['fields']['wemSubmissionSummaryNotification'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_form']['wemSubmissionSummaryNotification'],
+    'exclude'                   => true,
+    'inputType'                 => 'select',
+    'options_callback'          => array('tl_wem_form', 'getSummaryNotifications'),
+    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50 clr'),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'"
+);
+$GLOBALS['TL_DCA']['tl_form']['fields']['wemSubmissionSummaryNotificationFrequency'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_form']['wemSubmissionSummaryNotificationFrequency'],
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options'				  => array('monthly', 'weekly', 'daily', 'hourly'),
+	'eval'                    => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+	'sql'                     => "varchar(16) NOT NULL default ''"
+);
+
+$GLOBALS['TL_DCA']['tl_form']['fields']['wemSubmissionMessages'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_form']['wemSubmissionMessages'],
+	'exclude'                 => true,
+	'filter'                  => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+	'sql'                     => "char(1) NOT NULL default ''"
+);
+$GLOBALS['TL_DCA']['tl_form']['fields']['wemSubmissionMessageNotification'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_form']['wemSubmissionMessageNotification'],
+    'exclude'                   => true,
+    'inputType'                 => 'select',
+    'options_callback'          => array('tl_wem_form', 'getMessageNotifications'),
+    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'clr'),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'"
 );
 
 /**
@@ -98,4 +138,38 @@ class tl_wem_form extends tl_form
 		$href .= '&amp;id='.$row['id'];
 		return '<a href="'.$this->addToUrl($href).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label).'</a> ';
 	}
+
+	/**
+     * Get notification choices
+     *
+     * @return array
+     */
+    public function getSummaryNotifications()
+    {
+        $arrChoices = array();
+        $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='new_forms' ORDER BY title");
+
+        while ($objNotifications->next()) {
+            $arrChoices[$objNotifications->id] = $objNotifications->title;
+        }
+
+        return $arrChoices;
+    }
+
+    /**
+     * Get notification choices
+     *
+     * @return array
+     */
+    public function getMessageNotifications()
+    {
+        $arrChoices = array();
+        $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='new_answer' ORDER BY title");
+
+        while ($objNotifications->next()) {
+            $arrChoices[$objNotifications->id] = $objNotifications->title;
+        }
+
+        return $arrChoices;
+    }
 }

@@ -20,7 +20,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => true,
 		'ptable'                      => 'tl_form',
-		'ctable'					  => array('tl_wem_form_submission_field', 'tl_wem_form_submission_log'),
+		'ctable'					  => array('tl_wem_form_submission_field', 'tl_wem_form_submission_log', 'tl_wem_form_submission_answer'),
 		'sql' => array
 		(
 			'keys' => array
@@ -78,6 +78,13 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['logs'],
 				'href'                => 'table=tl_wem_form_submission_log',
 				'icon'                => 'editor.svg'
+			),
+			'messages' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['messages'],
+				'href'                => 'table=tl_wem_form_submission_answer',
+				'icon'                => 'system/modules/wem-contao-form-submissions/assets/backend/icon_messages_16.png',
+				'button_callback'	  => array('tl_wem_form_submission', 'checkFormConfig'),
 			)
 		)
 	),
@@ -85,7 +92,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{general_legend},createdAt,status,tags,fields',
+		'default'                     => '{general_legend},createdAt,status,tags,fields,messages,logs',
 	),
 
 	// Subpalettes
@@ -180,6 +187,46 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission'] = array
 		        'tl_class'=>'clr',
 		    ),
 		),
+
+		'logs' => array
+		(
+			'label'                 => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['logs'],
+		    'inputType'             => 'dcaWizard',
+		    'foreignTable'          => 'tl_wem_form_submission_log',
+		    'foreignField'          => 'pid',
+		    'params'                  => array
+		    (
+		        'do'                  => 'form',
+		    ),
+		    'eval'                  => array
+		    (
+		        'fields' => array('createdAt', 'type', 'log'),
+		        'orderField' => 'tstamp',
+		        'showOperations' => true,
+		        'operations' => array('edit', 'delete'),
+		        'tl_class'=>'clr',
+		    ),
+		),
+
+		'messages' => array
+		(
+			'label'                 => &$GLOBALS['TL_LANG']['tl_wem_form_submission']['messages'],
+		    'inputType'             => 'dcaWizard',
+		    'foreignTable'          => 'tl_wem_form_submission_answer',
+		    'foreignField'          => 'pid',
+		    'params'                  => array
+		    (
+		        'do'                  => 'form',
+		    ),
+		    'eval'                  => array
+		    (
+		        'fields' => array('createdAt', 'author', 'message'),
+		        'orderField' => 'tstamp',
+		        'showOperations' => true,
+		        'operations' => array('edit', 'delete'),
+		        'tl_class'=>'clr',
+		    ),
+		),
 	)
 );
 
@@ -199,12 +246,38 @@ class tl_wem_form_submission extends Backend
 	}
 
 	public function listItems($row){
-		return sprintf('Créé le %s | %s', date('d/m/Y à H:i', $row['createdAt']), $GLOBALS['TL_LANG']['tl_wem_form_submission']['status'][$row['status']]);
+		return sprintf(
+			'Le %s | %s | %s messages'
+			,date('d/m/Y à H:i', $row['createdAt'])
+			,$GLOBALS['TL_LANG']['tl_wem_form_submission']['status'][$row['status']]
+			,\WEM\Form\Model\Answer::countBy('pid', $row['pid'])
+		);
 	}
 
 	public function getFormTags($objDc){
 		$objFormSubmission = $this->Database->prepare("SELECT pid FROM tl_wem_form_submission WHERE id = ?")->execute($objDc->id);
 		$objForm = $this->Database->prepare("SELECT wemSubmissionTags FROM tl_form WHERE id = ?")->execute($objFormSubmission->pid);
 		return deserialize($objForm->wemSubmissionTags);
+	}
+
+	/**
+	 * Return the operation button
+	 *
+	 * @param array  $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
+	 *
+	 * @return string
+	 */
+	public function checkFormConfig($row, $href, $label, $title, $icon, $attributes){
+		$objForm = \FormModel::findByPk($row['pid']);
+		if(!$objForm->wemSubmissionMessages)
+			return '';
+
+		$href .= '&amp;id='.$row['id'];
+		return '<a href="'.$this->addToUrl($href).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label).'</a> ';
 	}
 }
