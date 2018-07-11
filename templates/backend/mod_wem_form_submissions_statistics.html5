@@ -2,7 +2,6 @@
 	<a href="<?= ampersand(str_replace('&key=wemFormStatistics', '', \Environment::get('request'))) ?>" class="header_back" title="<?= specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) ?>" accesskey="b"><?= $GLOBALS['TL_LANG']['MSC']['backBT'] ?></a>
 </div>
 <?= \Message::generate() ?>
-<?php if(!$this->isError): ?>
 <form action="<?= ampersand(\Environment::get('request'), true) ?>" id="tl_wem_form_submissions_filter" class="tl_form" method="post" enctype="multipart/form-data">
 	<div class="tl_formbody_edit">
 		<input type="hidden" name="FORM_SUBMIT" value="tl_wem_form_submissions_filter">
@@ -56,34 +55,52 @@
 	</div>
 </form>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
-<div class="charts">
-	<div class="chart">
-		<h3>Nombre de formulaires envoyés, par mois et par statut</h3>
-		<canvas id="nbFormsChart"></canvas>
-	</div>
-	<div class="chart">
-		<h3>Répartion des formulaires, par statut</h3>
-		<canvas id="pieChart1"></canvas>
+<?php if(!$this->isError): ?>
+<div id="tl_wem_form_submissions_statistics">
+	<div class="charts">
+		<div class="chart">
+			<h3>Nombre de formulaires envoyés par mois</h3>
+			<canvas id="nbCharts"></canvas>
+		</div>
+		<div class="chart">
+			<h3>Répartition des formulaires par statut</h3>
+			<canvas id="statusChart"></canvas>
+		</div>
+		<div class="chart">
+			<h3>Taux de remplissage des champs</h3>
+			<canvas id="filledFieldsChart"></canvas>
+		</div>
 	</div>
 </div>
-<script>
-var nbFormsChart = document.getElementById("nbFormsChart").getContext('2d');
-var nbFormsChart = new Chart(nbFormsChart, {
-    type: 'bar',
-    data: {
-        labels: <?= $this->months ?>,
-        datasets: <?= $this->chart1_datasets ?>
-    },
-    options: {
-        scales: {
-        	xAxes: [{
-                time: {
-                    unit: 'month'
-                }
-            }],
-            yAxes: [{
-                ticks: {
+
+<div class="tl_formbody_submit">
+	<div class="tl_submit_container">
+	  <button name="export" id="export" class="tl_submit">Exporter (PDF)</button>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script type="text/javascript" src="system/modules/wem-contao-form-submissions/assets/backend/html2canvas.min.js"></script>
+
+<script type="text/javascript">
+var nbCharts = new Chart(document.getElementById("nbCharts").getContext('2d'), {
+    type:'<?= (count(json_decode($this->months)) == 1) ? 'bar' : 'line' ?>'
+    ,data:{
+    	labels:<?= $this->months ?>
+    	,datasets:<?= $this->chart1_datasets ?>
+    }
+    ,options:{
+    	scales:{
+    		xAxes:[{
+    			time:{
+    				unit:'month'
+    			}
+    		}]
+            ,yAxes:[{
+                ticks:{
                     beginAtZero:true
                 }
             }]
@@ -91,13 +108,46 @@ var nbFormsChart = new Chart(nbFormsChart, {
     }
 });
 
-var pieChart1 = document.getElementById("pieChart1").getContext('2d');
-var pieChart1 = new Chart(pieChart1,{
-    type: 'pie',
-    data: {
-        labels: <?= $this->status ?>,
-        datasets: <?= $this->chart2_datasets ?>
-    },
+var statusChart = new Chart(document.getElementById("statusChart").getContext('2d'), {
+    type:'pie'
+    ,data:{
+        labels:<?= $this->status ?>
+        ,datasets:<?= $this->chart2_datasets ?>
+    }
+});
+
+var filledFieldsChart = new Chart(document.getElementById("filledFieldsChart").getContext('2d'), {
+    type:'radar'
+    ,data:{
+    	labels:<?= $this->fields ?>
+    	,datasets:<?= $this->chart3_datasets ?>
+    }
+});
+
+jQuery.noConflict();
+jQuery(document).ready(function(){
+	toastr.options.closeButton = true;
+	toastr.options.progressBar = true;
+	jQuery('button#export').bind('click', function(){
+		html2canvas(document.getElementById("tl_wem_form_submissions_statistics")).then(function(canvas){
+			jQuery.ajax({
+				method:"POST"
+				,data:{action:"exportPDF",picture:canvas.toDataURL(),start:<?= $this->start ?>,stop:<?= $this->stop ?>}
+			}).done(function(msg){
+				console.log(msg);
+				var results = jQuery.parseJSON(msg);
+				if('error' == results.status)
+					toastr.error(results.msg, 'Error !');
+				else{
+					toastr.success("Votre export a été effectué. Vous allez être redirigés dans 5 secondes. (Pensez à autoriser les popups !)", 'Export réussi !');
+					setTimeout(function(){
+						var win = window.open(results.filename, '_blank');
+						win.focus();
+					},3000);
+				}
+			});
+		});
+	});
 });
 </script>
 <?php endif; ?>

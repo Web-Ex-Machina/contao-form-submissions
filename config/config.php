@@ -22,6 +22,7 @@ $GLOBALS['BE_MOD']['content']['form']['wemFormStatistics'] = array('WEM\Form\Bac
 $GLOBALS['TL_HOOKS']['getPageLayout'][] = array('WEM\Form\Hooks', 'catchAjaxRequest');
 $GLOBALS['TL_HOOKS']['compileFormFields'][] = array('WEM\Form\Hooks', 'addHiddenFields');
 $GLOBALS['TL_HOOKS']['prepareFormData'][] = array('WEM\Form\Hooks', 'storeFormLogs');
+$GLOBALS['TL_HOOKS']['executePostActions'][] = array('WEM\Form\Backend\Callback', 'exportPDF');
 
 /**
  * Models
