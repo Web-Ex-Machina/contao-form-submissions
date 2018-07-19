@@ -246,12 +246,17 @@ class tl_wem_form_submission extends Backend
 	}
 
 	public function listItems($row){
-		return sprintf(
-			'Le %s | %s | %s messages'
-			,date('d/m/Y à H:i', $row['createdAt'])
-			,$GLOBALS['TL_LANG']['tl_wem_form_submission']['status'][$row['status']]
-			,\WEM\Form\Model\Answer::countBy('pid', $row['pid'])
-		);
+		$pattern = 'Le %s | %s';
+		$args[] = date('d/m/Y à H:i', $row['createdAt']);
+		$args[] = $GLOBALS['TL_LANG']['tl_wem_form_submission']['status'][$row['status']];
+
+		$objForm = \FormModel::findByPk($row['pid']);
+		if($objForm->wemSubmissionMessages){
+			$pattern .= ' | %s messages';
+			$args[] = \WEM\Form\Model\Answer::countBy('pid', $row['pid']);
+		}
+
+		return vsprintf($pattern, $args);
 	}
 
 	public function getFormTags($objDc){

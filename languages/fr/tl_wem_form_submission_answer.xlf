@@ -14,13 +14,37 @@
 			<source>Enter the date where the message has been created.</source>
 			<target>Saisissez la date à laquelle le message a été créé.</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_form_submission_answer.author.0">
-			<source>Author</source>
-			<target>Auteur</target>
+		<trans-unit id="tl_wem_form_submission_answer.sender_name.0">
+			<source>Sender name</source>
+			<target>Nom de l'émetteur</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_form_submission_answer.author.1">
-			<source>Enter the message author.</source>
-			<target>Saisissez l'auteur du message.</target>
+		<trans-unit id="tl_wem_form_submission_answer.sender_name.1">
+			<source>Enter the sender name.</source>
+			<target>Saisissez le nom de l'émetteur du message.</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.sender_email.0">
+			<source>Sender email</source>
+			<target>Email de l'émetteur</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.sender_email.1">
+			<source>Enter the sender name.</source>
+			<target>Saisissez le nom de l'émetteur du message.</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.recipient_name.0">
+			<source>Recipient name</source>
+			<target>Nom du destinataire</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.recipient_name.1">
+			<source>Enter the recipient name.</source>
+			<target>Saisissez le nom du destinataire du message.</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.recipient_email.0">
+			<source>Recipient email</source>
+			<target>Email du destinataire</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_form_submission_answer.recipient_email.1">
+			<source>Enter the recipient name.</source>
+			<target>Saisissez le nom du destinataire du message.</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_form_submission_answer.message.0">
 			<source>Message</source>

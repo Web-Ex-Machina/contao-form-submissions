@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_form']['palettes']['default'] .= ';{wem_submission_legend
  * Update tl_form subpalettes
  */
 $GLOBALS['TL_DCA']['tl_form']['subpalettes']['wemStoreSubmissions'] = 'wemSubmissionTags,wemSubmissionSummaryNotification,wemSubmissionSummaryNotificationFrequency,wemSubmissionMessages';
-$GLOBALS['TL_DCA']['tl_form']['subpalettes']['wemSubmissionMessages'] = 'wemSubmissionMessageNotification';
+$GLOBALS['TL_DCA']['tl_form']['subpalettes']['wemSubmissionMessages'] = 'wemSubmissionNewConversationNotification,wemSubmissionNewMessageNotification';
 
 /**
  * Update tl_form fields
@@ -94,13 +94,22 @@ $GLOBALS['TL_DCA']['tl_form']['fields']['wemSubmissionMessages'] = array
 	'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr'),
 	'sql'                     => "char(1) NOT NULL default ''"
 );
-$GLOBALS['TL_DCA']['tl_form']['fields']['wemSubmissionMessageNotification'] = array
+$GLOBALS['TL_DCA']['tl_form']['fields']['wemSubmissionNewConversationNotification'] = array
 (
-    'label'                     => &$GLOBALS['TL_LANG']['tl_form']['wemSubmissionMessageNotification'],
+    'label'                     => &$GLOBALS['TL_LANG']['tl_form']['wemSubmissionNewConversationNotification'],
     'exclude'                   => true,
     'inputType'                 => 'select',
-    'options_callback'          => array('tl_wem_form', 'getMessageNotifications'),
-    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'clr'),
+    'options_callback'          => array('tl_wem_form', 'getNewAnswerNotifications'),
+    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'clr w50'),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'"
+);
+$GLOBALS['TL_DCA']['tl_form']['fields']['wemSubmissionNewMessageNotification'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_form']['wemSubmissionNewMessageNotification'],
+    'exclude'                   => true,
+    'inputType'                 => 'select',
+    'options_callback'          => array('tl_wem_form', 'getNewAnswerNotifications'),
+    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
     'sql'                       => "int(10) unsigned NOT NULL default '0'"
 );
 
@@ -161,7 +170,7 @@ class tl_wem_form extends tl_form
      *
      * @return array
      */
-    public function getMessageNotifications()
+    public function getNewAnswerNotifications()
     {
         $arrChoices = array();
         $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='new_answer' ORDER BY title");

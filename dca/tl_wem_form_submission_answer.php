@@ -20,6 +20,10 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_answer'] = array
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => true,
 		'ptable'                      => 'tl_wem_form_submission',
+		'onsubmit_callback'			  => array
+		(
+			array('tl_wem_form_submission_answer', 'sendNotification'),
+		),
 		'sql' => array
 		(
 			'keys' => array
@@ -78,7 +82,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_answer'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{general_legend},createdAt,author,message',
+		'default'                     => '{general_legend},createdAt,sender_name,sender_email,recipient_name,recipient_email,message',
 	),
 
 	// Subpalettes
@@ -104,6 +108,10 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_answer'] = array
 		(
 			'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		),
+		'notificationSent' => array
+		(
+			'sql'                     => "int(10) unsigned NOT NULL default '0'"
+		),
 
 		'createdAt' => array
 		(
@@ -117,13 +125,40 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_answer'] = array
 			'eval'                    => array('rgxp'=>'datim', 'doNotCopy'=>true, 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
 			'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		),
-		'author' => array
+		'sender_name' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission_answer']['author'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission_answer']['sender_name'],
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'clr w50'),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'sender_email' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission_answer']['sender_email'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'recipient_name' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission_answer']['recipient_name'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'tl_class'=>'clr w50'),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'recipient_email' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission_answer']['recipient_email'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'text',
+			'eval'                    => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'message' => array
@@ -132,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_answer'] = array
 			'exclude'                 => true,
 			'search'				  => true,
 			'inputType'               => 'textarea',
-			'eval'                    => array('tl_class'=>'clr', 'doNotCopy'=>true),
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'clr', 'doNotCopy'=>true),
 			'sql'                     => "text NULL"
 		),
 	)
@@ -152,6 +187,13 @@ class tl_wem_form_submission_answer extends Backend
 	{
 		parent::__construct();
 		$this->import('BackendUser', 'User');
+	}
+
+	public function sendNotification($dc){
+		if(\WEM\Form\Core::sendNotification($dc->id))
+			\Message::addConfirmation("La notification a été envoyée");
+		else
+			\Message::addInfo("Le message a été sauvegardé mais la notification n'a pas été envoyée");
 	}
 
 	public function listItems($row){

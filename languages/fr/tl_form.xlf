@@ -47,13 +47,21 @@
             <source>Check to activate the form submissions messages.</source>
             <target>Cochez pour activer la messagerie des soumissions de formulaire.</target>
         </trans-unit>
-        <trans-unit id="tl_form.wemSubmissionMessageNotification.0">
-            <source>Message notification</source>
-            <target>Notification de message</target>
+        <trans-unit id="tl_form.wemSubmissionNewConversationNotification.0">
+            <source>Conversation notification</source>
+            <target>Notification de conversation</target>
         </trans-unit>
-        <trans-unit id="tl_form.wemSubmissionMessageNotification.1">
-            <source>Select the notification you want to send when a new message is created.</source>
-            <target>Sélectionnez la notification que vous souhaitez envoyer lorsqu'un nouveau message est créé.</target>
+        <trans-unit id="tl_form.wemSubmissionNewConversationNotification.1">
+            <source>Select the notification you want to send when a new conversation is created.</source>
+            <target>Sélectionnez la notification que vous souhaitez envoyer lorsqu'une nouvelle conversation est créée.</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionNewMessageNotification.0">
+            <source>Answer notification</source>
+            <target>Notification de réponse</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionNewMessageNotification.1">
+            <source>Select the notification you want to send when a new answer is created.</source>
+            <target>Sélectionnez la notification que vous souhaitez envoyer lorsqu'une nouvelle réponse est créée.</target>
         </trans-unit>
 
     	<trans-unit id="tl_form.wem_submissions.0">

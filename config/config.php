@@ -49,8 +49,8 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['wem_form_submission']['new
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['wem_form_submission']['new_answer'] = array(
 	'recipients'			=> array('email'),
 	'email_subject'			=> array('form_*'),
-	'email_text'			=> array('form_*', 'answer_*'),
-	'email_html'			=> array('form_*', 'answer_*'),
+	'email_text'			=> array('form_*', 'conversation_*', 'answer_*', 'sender_*'),
+	'email_html'			=> array('form_*', 'conversation_*', 'answer_*', 'sender_*'),
 	'email_sender_name'		=> array('sender_*', 'form_*'),
 	'email_sender_address'	=> array('sender_*', 'form_*'),
 	'email_recipient_cc'	=> array('sender_*', 'form_*'),
