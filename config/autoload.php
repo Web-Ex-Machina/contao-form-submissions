@@ -22,4 +22,7 @@ if (class_exists('NamespaceClassLoader'))
 TemplateLoader::addFiles(array
 (
 	'mod_wem_form_submissions_statistics' => 'system/modules/wem-contao-form-submissions/templates/backend',
+
+	'mod_wem_form_conversation' => 'system/modules/wem-contao-form-submissions/templates/modules',
+	'mod_wem_form_conversation_message' => 'system/modules/wem-contao-form-submissions/templates/modules',
 ));

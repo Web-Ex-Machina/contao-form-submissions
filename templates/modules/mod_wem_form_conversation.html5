@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+  <title><?= $this->website ?> | Conversation</title>
+</head>
+<body>
+	<div class="jumbotron">
+		<h1 class="display-4">Conversation | <?= $this->form->title ?></h1>
+		<hr class="my-4">
+		<p class="lead mb-0">Retrouvez ci-dessous la conversation enclenchée suite à votre envoi de formulaire, le <?= date('d/m/Y à H:i', $this->submission->createdAt) ?>.
+			<br />
+			A droite se trouve vos messages, à gauche, ceux de votre destinataire. Vous pouvez répondre à la conversation en bas de page, ainsi que l'archiver.
+		</p>
+	</div>
+
+	<div class="container">
+		<div class="messages">
+			<?= implode('', $this->answers) ?>
+			<div class="clearfix"></div>
+		</div>
+		<?php if($this->submission->status == "archived" || $this->submission->status == "archived"): ?>
+		<div class="bg-light p-3">
+			<p><strong>Cette conversation est archivée, vous ne pouvez plus y répondre.</strong></p>
+			<a href="<?= $this->base ?>" class="btn btn-primary" title="Retour au site">Retour au site</a>
+		</div>
+		<?php else: ?>
+		<div class="row action">
+			<div class="col-4">
+				<div class="bg-light p-3">
+					<h4>Archiver la conversation</h4>
+					<p>Cliquer sur le bouton ci-dessous pour fermer cette conversation et notifier votre destinataire</p>
+					<button class="btn btn-danger archive" href="#" role="button">Archiver</button>
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="bg-light p-3">
+					<h4>Répondre à la conversation</h4>
+					<input type="hidden" name="REQUEST_TOKEN" value="<?= $this->token ?>" /> 
+					<div class="form-group">
+						<textarea class="form-control" id="newAnswer" rows="3" placeholder="Écrire une réponse"></textarea>
+					</div>
+					<button type="button" class="btn btn-primary float-right answer">Envoyer</button>
+				</div>
+			</div>
+		</div>
+		<?php endif; ?>
+	</div>
+	
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+	</script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			<?php if($this->submission->status != "archived" && $this->submission->status != "archived"): ?>
+			$('.archive').bind('click', function(e){
+				if(confirm("Êtes-vous sûr de vouloir archiver cette conversation ?")){
+					var objFields = {
+						TL_AJAX:true
+						,REQUEST_TOKEN:$('input[name="REQUEST_TOKEN"]').val()
+						,action:"archive"
+					}
+
+					$.post('<?= $this->request ?>', objFields, function(results){
+						if("success" == results.status){
+							toastr.success("Conversation archivée !");
+							$('.action').fadeOut(400, function(){
+								$(this).remove();
+
+								var html = `
+<div class="bg-light p-3 archive" style="display:none;">
+	<p><strong>Cette conversation est archivée, vous ne pouvez plus y répondre.</strong></p>
+	<a href="<?= $this->base ?>" class="btn btn-primary" title="Retour au site">Retour au site</a>
+</div>
+								`;
+								$('.container').append(html);
+								$('.archive').fadeIn();
+							});
+						}
+						else{
+							toastr.error("Erreur : "+results.msg);
+						}
+					}, "json");
+				}
+			});
+
+			$('.answer').bind('click', function(e){
+				if($('#newAnswer').val() === ""){
+					toastr.error("Le champ de réponse est vide !");
+				}
+				else if(confirm("Êtes-vous sûr de vouloir envoyer cette réponse ?")){
+					var objFields = {
+						TL_AJAX:true
+						,REQUEST_TOKEN:$('input[name="REQUEST_TOKEN"]').val()
+						,action:"answer"
+						,message:$('#newAnswer').val()
+					}
+
+					$.post('<?= $this->request ?>', objFields, function(results){
+						if("success" == results.status){
+							toastr.success("Réponse envoyée !");
+							$('.messages').append(results.message);
+						}
+						else{
+							toastr.error("Erreur : "+results.msg);
+						}
+					}, "json");
+				}
+			});
+			<?php endif; ?>
+		});
+	</script>
+</body>
+</html>

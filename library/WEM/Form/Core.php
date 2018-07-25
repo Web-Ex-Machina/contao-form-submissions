@@ -101,7 +101,7 @@ class Core extends Controller
 			$arrTokens['conversation_timestamp'] = $objFirstAnswer->createdAt;
 			$arrTokens['conversation_date'] = date('d/m/Y à H:i', $objFirstAnswer->createdAt);
 			$arrTokens['conversation_nbMessages'] = $objAnswers->count();
-			$arrTokens['conversation_link'] = \Environment::get('base').'wem-form-conversation/'.$objSubmission->token.'.html';
+			$arrTokens['conversation_link'] = \Environment::get('base').'wem-form-conversation/'.$objSubmission->token.'.html?from='.$objAnswer->recipient_email;
 
 			foreach($objForm->row() as $k=>$v)
 				$arrTokens['form_'.$k] = $v;

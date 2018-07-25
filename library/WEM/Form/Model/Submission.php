@@ -115,6 +115,9 @@ class Submission extends Model
 			if($arrConfig["status"])
 				$arrColumns[] = "$t.status = '". $arrConfig["status"] ."'";
 
+			if($arrConfig["token"])
+				$arrColumns[] = "$t.token = '". $arrConfig["token"] ."'";
+
 			if($arrConfig["not"])
 				$arrColumns[] = $arrConfig["not"];
 

@@ -1,0 +1,8 @@
+<div class="row">
+	<div class="col-8<?= $this->classContainer ?>">
+		<div class="p-3 mb-3<?= $this->class ?>">
+			<p class=""><?= $this->message ?></p>
+			<p class="mb-0 text-right"><span class="badge badge-pill badge-dark">Le <?= date('d/m/Y à H:i', $this->createdAt) ?></span></p>
+		</div>
+	</div>
+</div>

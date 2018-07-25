@@ -18,6 +18,7 @@ use Contao\RequestToken;
 use WEM\Form\Model\Submission;
 use WEM\Form\Model\Field;
 use WEM\Form\Model\Log;
+use WEM\Form\Model\Answer;
 
 /**
  * Hooks functions
@@ -194,5 +195,133 @@ class Hooks extends Controller
 				$objLog->save();
 			}
 		}
+	}
+
+	/**
+	 * Catch conversation link
+	 * @param [Array] $arrFragments [URL parts]
+	 */
+	public function generateConversationView($arrFragments){
+		
+		if("wem-form-conversation" === $arrFragments[0] && "auto_item" === $arrFragments[1]){
+			try{
+				$objSubmission = Submission::findOneBy('token', $arrFragments[2]);
+				if(!$objSubmission)
+					throw new Exception("Cette conversation n'existe pas, lien invalide");
+
+				$objForm = \FormModel::findByPk($objSubmission->pid);
+				$objAnswers = Answer::findItems(['pid'=>$objSubmission->id], 0, 0, ["order"=>"createdAt ASC"]);
+
+				$arrRecipients = [];
+				while($objAnswers->next()){
+					if(!array_key_exists($objAnswers->recipient_email, $arrRecipients))
+						$arrRecipients[$objAnswers->recipient_email] = $objAnswers->recipient_name;
+
+					if(!array_key_exists($objAnswers->sender_email, $arrRecipients))
+						$arrRecipients[$objAnswers->sender_email] = $objAnswers->sender_name;
+				}
+
+				if(Input::post('TL_AJAX')){
+					try{
+						switch(Input::post('action')){
+							case 'archive':
+								$objSubmission->status = "archived";
+								if(!$objSubmission->save())
+									throw new Exception("Erreur inconnue dans l'archivage de la conversation, veuillez réessayer");
+
+								$arrResponse = ["status"=>"success"];
+								
+								// Send notification to every particpants
+							break;
+
+							case 'answer':
+								if(!Input::post("message"))
+									throw new Exception("Aucun message envoyé !");
+
+								$objAnswer = new Answer();
+								$objAnswer->createdAt = time();
+								$objAnswer->tstamp = time();
+								$objAnswer->pid = $objSubmission->id;
+								$objAnswer->sender_name = $arrRecipients[Input::get('from')];
+								$objAnswer->sender_email = Input::get('from');
+								
+								$objAnswer->message = strip_tags(Input::post("message"));
+
+								foreach($arrRecipients as $strEmail => $strName){
+									if($strEmail !== $objAnswer->sender_email){
+										$objAnswer->recipient_name = $strName;
+										$objAnswer->recipient_email = $strEmail;
+										break;
+									}
+								}
+
+								if(!$objAnswer->save())
+									throw new Exception("Erreur inconnue dans la création de la réponse, veuillez réessayer");
+
+								$objTemplate = new \FrontendTemplate('mod_wem_form_conversation_message');
+								$objTemplate->createdAt = $objAnswer->createdAt;
+								$objTemplate->message = strip_tags($objAnswer->message);
+								$objTemplate->sender_name = $objAnswer->sender_name;
+								$objTemplate->sender_email = $objAnswer->sender_email;
+								$objTemplate->class = ' text-white bg-info';
+								$objTemplate->classContainer = ' offset-4';
+
+								$arrResponse = ["status"=>"success", "message"=>$objTemplate->parse()];
+
+								// Send notification to every particpants
+	
+							break;
+
+							default:
+								throw new Exception("Action inconnue");
+						}
+					}
+					catch(Exception $e){
+						$arrResponse = ["status"=>"error", "msg"=>$e->getMessage()];
+					}
+
+					echo json_encode($arrResponse); die;
+					
+				}
+
+				$arrAnswers = [];
+				$objAnswers->reset();
+				while($objAnswers->next()){
+					$objTemplate = new \FrontendTemplate('mod_wem_form_conversation_message');
+					$objTemplate->createdAt = $objAnswers->createdAt;
+					$objTemplate->message = strip_tags($objAnswers->message);
+					$objTemplate->sender_name = $objAnswers->sender_name;
+					$objTemplate->sender_email = $objAnswers->sender_email;
+
+					if(Input::get('from') == $objAnswers->sender_email){
+						$objTemplate->class = ' text-white bg-info';
+						$objTemplate->classContainer = ' offset-4';
+					}
+					else{
+						$objTemplate->class = ' text-white bg-secondary';
+						$objTemplate->classContainer = '';
+					}
+
+					$arrAnswers[] = $objTemplate->parse();
+				}
+
+				$objTemplate = new \FrontendTemplate('mod_wem_form_conversation');
+				$objTemplate->website = \Config::get('websiteTitle');
+				$objTemplate->form = $objForm;
+				$objTemplate->submission = $objSubmission;
+				$objTemplate->answers = $arrAnswers;
+				$objTemplate->base = \Environment::get('base');
+				$objTemplate->request = \Environment::get('requestUri');
+				$objTemplate->token = \RequestToken::get();
+
+				echo $objTemplate->parse();
+				die;
+			}
+			catch(Exception $e){
+
+			}
+		}
+		
+		return $arrFragments;
 	}
 }

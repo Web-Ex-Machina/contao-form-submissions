@@ -253,7 +253,7 @@ class tl_wem_form_submission extends Backend
 		$objForm = \FormModel::findByPk($row['pid']);
 		if($objForm->wemSubmissionMessages){
 			$pattern .= ' | %s messages';
-			$args[] = \WEM\Form\Model\Answer::countBy('pid', $row['pid']);
+			$args[] = \WEM\Form\Model\Answer::countBy('pid', $row['id']);
 		}
 
 		return vsprintf($pattern, $args);
