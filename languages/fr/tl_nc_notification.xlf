@@ -5,7 +5,7 @@
 			<source>Form submissions (WEM)</source>
 			<target>Soumissions de formulaire (WEM)</target>
 		</trans-unit>
-
+		
 		<trans-unit id="tl_nc_notification.type.new_forms.0">
 			<source>List of submissions to treat</source>
 			<target>Liste des soumissions à traiter</target>
@@ -21,6 +21,14 @@
 		<trans-unit id="tl_nc_notification.type.new_answer.1">
 			<source>Sent when the user or admin answer to a submission.</source>
 			<target>Envoyée lorsque l'utilisateur ou l'administrateur répond à une soumission.</target>
+		</trans-unit>
+		<trans-unit id="tl_nc_notification.type.archived_conversation.0">
+			<source>Archived conversation</source>
+			<target>Conversation archivée</target>
+		</trans-unit>
+		<trans-unit id="tl_nc_notification.type.archived_conversation.1">
+			<source>Sent when the user or admin archives a conversation.</source>
+			<target>Envoyée lorsque l'utilisateur ou l'administrateur archive une conversation.</target>
 		</trans-unit>
 	</body>
   </file>

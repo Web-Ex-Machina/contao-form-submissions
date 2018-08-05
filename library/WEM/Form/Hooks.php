@@ -15,6 +15,8 @@ use Contao\Input;
 use Contao\Controller;
 use Contao\RequestToken;
 
+use NotificationCenter\Model\Notification;
+
 use WEM\Form\Model\Submission;
 use WEM\Form\Model\Field;
 use WEM\Form\Model\Log;
@@ -195,6 +197,21 @@ class Hooks extends Controller
 				$objLog->save();
 			}
 		}
+
+		// Create a generic answer with the values entered
+		$objAnswer = new Answer();
+		$objAnswer->createdAt = time();
+		$objAnswer->tstamp = time();
+		$objAnswer->pid = $objSubmission->id;
+		$objAnswer->sender_name = $arrFields["name"];
+		$objAnswer->sender_email = $arrFields["email"];
+		$objAnswer->message = $arrFields["message"];
+		$objAnswer->recipient_name = \Config::get('websiteTitle');
+		$objAnswer->recipient_email = \Config::get('adminEmail');
+
+		// And send the notification
+		if($objAnswer->save())
+			Core::sendNotification($objAnswer->id);		
 	}
 
 	/**
@@ -232,6 +249,32 @@ class Hooks extends Controller
 								$arrResponse = ["status"=>"success"];
 								
 								// Send notification to every particpants
+								if($objNotification = Notification::findByPk($objForm->wemSubmissionArchiveConversationNotification)){
+									$arrTokens = array();
+									$arrTokens['sender_name'] = $arrRecipients[Input::get('from')];
+									$arrTokens['sender_email'] = Input::get('from');
+
+									foreach($arrRecipients as $strEmail => $strName){
+										if($strEmail !== Input::get('from')){
+											$arrTokens['recipient_name'] = $strName;
+											$arrTokens['recipient_email'] = $strEmail;
+											break;
+										}
+									}
+
+									$objAnswers = Answer::findItems(['pid'=>$objSubmission->id], 0, 0, ['order'=>'createdAt ASC']);
+									$objFirstAnswer = $objAnswers->first();
+
+									$arrTokens['conversation_timestamp'] = $objFirstAnswer->createdAt;
+									$arrTokens['conversation_date'] = date('d/m/Y à H:i', $objFirstAnswer->createdAt);
+									$arrTokens['conversation_nbMessages'] = $objAnswers->count();
+									$arrTokens['conversation_link'] = \Environment::get('base').'wem-form-conversation/'.$objSubmission->token.'.html?from='.$arrTokens['recipient_email'];
+
+									foreach($objForm->row() as $k=>$v)
+										$arrTokens['form_'.$k] = $v;
+									
+									$objNotification->send($arrTokens);
+								}
 							break;
 
 							case 'answer':
@@ -269,7 +312,7 @@ class Hooks extends Controller
 								$arrResponse = ["status"=>"success", "message"=>$objTemplate->parse()];
 
 								// Send notification to every particpants
-	
+								Core::sendNotification($objAnswer->id);
 							break;
 
 							default:

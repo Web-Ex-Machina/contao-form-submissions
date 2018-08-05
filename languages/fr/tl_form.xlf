@@ -63,6 +63,14 @@
             <source>Select the notification you want to send when a new answer is created.</source>
             <target>Sélectionnez la notification que vous souhaitez envoyer lorsqu'une nouvelle réponse est créée.</target>
         </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionArchiveConversationNotification.0">
+            <source>Archive notification</source>
+            <target>Notification d'archivage</target>
+        </trans-unit>
+        <trans-unit id="tl_form.wemSubmissionArchiveConversationNotification.1">
+            <source>Select the notification you want to send when a conversation is archived.</source>
+            <target>Sélectionnez la notification que vous souhaitez envoyer lorsqu'une conversation est archivée.</target>
+        </trans-unit>
 
     	<trans-unit id="tl_form.wem_submissions.0">
     		<source>Manage form submissions</source>

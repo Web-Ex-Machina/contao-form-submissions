@@ -40,9 +40,9 @@ $GLOBALS['TL_MODELS'][\WEM\Form\Model\Answer::getTable()] = 'WEM\Form\Model\Answ
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['wem_form_submission']['new_forms'] = array(
 	'recipients'			=> array('admin_email'),
 	'email_subject'			=> array('form_*'),
-	'email_text'			=> array('form_*', 'nbForms'),
-	'email_html'			=> array('form_*', 'nbForms'),
-	'email_sender_name'		=> array('admin_email', 'form_*'),
+	'email_text'			=> array('form_*', 'nbSubmissions'),
+	'email_html'			=> array('form_*', 'nbSubmissions'),
+	'email_sender_name'		=> array('websiteTitle', 'admin_email', 'form_*'),
 	'email_sender_address'	=> array('admin_email', 'form_*'),
 	'email_recipient_cc'	=> array('admin_email', 'form_*'),
 	'email_recipient_bcc'	=> array('admin_email', 'form_*'),
@@ -52,8 +52,23 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['wem_form_submission']['new
 	'email_subject'			=> array('form_*'),
 	'email_text'			=> array('form_*', 'conversation_*', 'answer_*', 'sender_*'),
 	'email_html'			=> array('form_*', 'conversation_*', 'answer_*', 'sender_*'),
-	'email_sender_name'		=> array('sender_*', 'form_*'),
+	'email_sender_name'		=> array('websiteTitle', 'sender_*', 'form_*'),
 	'email_sender_address'	=> array('sender_*', 'form_*'),
 	'email_recipient_cc'	=> array('sender_*', 'form_*'),
 	'email_recipient_bcc'	=> array('sender_*', 'form_*'),
 );
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['wem_form_submission']['archived_conversation'] = array(
+	'recipients'			=> array('email'),
+	'email_subject'			=> array('form_*'),
+	'email_text'			=> array('form_*', 'conversation_*', 'sender_*'),
+	'email_html'			=> array('form_*', 'conversation_*', 'sender_*'),
+	'email_sender_name'		=> array('websiteTitle', 'sender_*', 'form_*'),
+	'email_sender_address'	=> array('sender_*', 'form_*'),
+	'email_recipient_cc'	=> array('sender_*', 'form_*'),
+	'email_recipient_bcc'	=> array('sender_*', 'form_*'),
+);
+
+/**
+ * Setup the CRON Jobs
+ */
+\WEM\Form\Core::setupCronJobs();

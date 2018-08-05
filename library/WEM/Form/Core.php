@@ -112,4 +112,81 @@ class Core extends Controller
 			throw $e;
 		}
 	}
+
+	/**
+	 * Correctly setup the Cron Jobs we need
+	 */
+	public static function setupCronJobs(){
+		if(\FormModel::countBy('wemSubmissionSummaryNotificationFrequency', 'hourly') > 0)
+			$GLOBALS['TL_CRON']['hourly'][]  = array('WEM\Form\Core', 'sendHourlySummary');
+		if(\FormModel::countBy('wemSubmissionSummaryNotificationFrequency', 'daily') > 0)
+			$GLOBALS['TL_CRON']['daily'][]   = array('WEM\Form\Core', 'sendDailySummary');
+		if(\FormModel::countBy('wemSubmissionSummaryNotificationFrequency', 'weekly') > 0)
+			$GLOBALS['TL_CRON']['weekly'][]  = array('WEM\Form\Core', 'sendWeeklySummary');
+		if(\FormModel::countBy('wemSubmissionSummaryNotificationFrequency', 'monthly') > 0)
+			$GLOBALS['TL_CRON']['monthly'][] = array('WEM\Form\Core', 'sendMonthlySummary');
+	}
+
+	/**
+	 * Find and send hourly submissions
+	 */
+	public function sendHourlySummary(){
+		$this->sendSummary('hourly');
+	}
+
+	/**
+	 * Find and send daily submissions
+	 */
+	public function sendDailySummary(){
+		$this->sendSummary('daily');
+	}
+
+	/**
+	 * Find and send weekly submissions
+	 */
+	public function sendWeeklySummary(){
+		$this->sendSummary('weekly');
+	}
+
+	/**
+	 * Find and send monthly submissions
+	 */
+	public function sendMonthlySummary(){
+		$this->sendSummary('monthly');
+	}
+
+	/**
+	 * Generic function to send summaries
+	 * @param  [String] $strMode [Cron mode]
+	 */
+	public function sendSummary($strMode){
+		try{
+			$objForms = $this->Database->prepare("SELECT * FROM tl_form WHERE wemSubmissionSummaryNotification != '' AND wemSubmissionSummaryNotificationFrequency = '?'")->execute($strMode);
+			
+			if(!$objForms || 0 === $objForms->count())
+				return;
+
+			while($objForms->next()){
+				$intNewSubmissions = Submission::countItems(["pid"=>$objForms->id, "status"=>"created"]);
+
+				if(0 === $intNewSubmissions)
+					continue;
+
+				if($objNotification = Notification::findByPk($objForm->wemSubmissionSummaryNotification)){
+					$arrTokens = array();
+					$arrTokens['websiteTitle'] = \Config::get('websiteTitle');
+					$arrTokens['admin_email'] = \Config::get('adminEmail');
+					foreach($objForm->row() as $k=>$v)
+						$arrTokens['form_'.$k] = $v;
+					$arrTokens["nbSubmissions"] = $intNewSubmissions;
+					$objNotification->send($arrTokens);
+
+					\System::log(sprintf("Notification (%s) sent for the form %s", $strMode, $objForm->title), __METHOD__, "TL_CRON");
+				}
+			}
+		}
+		catch(Exception $e){
+			\System::log("Cronjob error : ".$e->getMessage(), __METHOD__, "TL_CRON");
+		}
+	}
 }

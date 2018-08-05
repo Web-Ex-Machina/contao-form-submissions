@@ -128,6 +128,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_answer'] = array
 		'sender_name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission_answer']['sender_name'],
+			'default'                 => \Config::get('websiteTitle'),
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'text',
@@ -137,6 +138,7 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_answer'] = array
 		'sender_email' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_wem_form_submission_answer']['sender_email'],
+			'default'                 => \Config::get('adminEmail'),
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'text',
@@ -150,6 +152,9 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_answer'] = array
 			'filter'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'clr w50'),
+			'load_callback'			  => array(
+				array('tl_wem_form_submission_answer', 'getDefaultName')
+			),
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'recipient_email' => array
@@ -159,6 +164,9 @@ $GLOBALS['TL_DCA']['tl_wem_form_submission_answer'] = array
 			'filter'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
+			'load_callback'			  => array(
+				array('tl_wem_form_submission_answer', 'getDefaultEmail')
+			),
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'message' => array
@@ -198,5 +206,35 @@ class tl_wem_form_submission_answer extends Backend
 
 	public function listItems($row){
 		return sprintf('Créé le %s | %s | %s', date('d/m/Y à H:i:s', $row['createdAt']), $row['author'], $row['message']);
+	}
+
+	public function getDefaultName($varValue, $objDc){
+		if(!$varValue){
+			$objAnswer = \WEM\Form\Model\Answer::findByPk($objDc->id);
+			$objAnswers = \WEM\Form\Model\Answer::findBy('pid', $objAnswer->pid);
+
+			while($objAnswers->next()){
+				if($objAnswers->recipient_name != \Config::get('websiteTitle')){
+					$varValue = $objAnswers->recipient_name;
+					break;
+				}
+			}
+		}
+		return $varValue;
+	}
+
+	public function getDefaultEmail($varValue, $objDc){
+		if(!$varValue){
+			$objAnswer = \WEM\Form\Model\Answer::findByPk($objDc->id);
+			$objAnswers = \WEM\Form\Model\Answer::findBy('pid', $objAnswer->pid);
+
+			while($objAnswers->next()){
+				if($objAnswers->recipient_email != \Config::get('adminEmail')){
+					$varValue = $objAnswers->recipient_email;
+					break;
+				}
+			}
+		}
+		return $varValue;
 	}
 }

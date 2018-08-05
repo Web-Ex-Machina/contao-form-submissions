@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_form']['palettes']['default'] .= ';{wem_submission_legend
  * Update tl_form subpalettes
  */
 $GLOBALS['TL_DCA']['tl_form']['subpalettes']['wemStoreSubmissions'] = 'wemSubmissionTags,wemSubmissionSummaryNotification,wemSubmissionSummaryNotificationFrequency,wemSubmissionMessages';
-$GLOBALS['TL_DCA']['tl_form']['subpalettes']['wemSubmissionMessages'] = 'wemSubmissionNewConversationNotification,wemSubmissionNewMessageNotification';
+$GLOBALS['TL_DCA']['tl_form']['subpalettes']['wemSubmissionMessages'] = 'wemSubmissionNewConversationNotification,wemSubmissionNewMessageNotification,wemSubmissionArchiveConversationNotification';
 
 /**
  * Update tl_form fields
@@ -112,6 +112,15 @@ $GLOBALS['TL_DCA']['tl_form']['fields']['wemSubmissionNewMessageNotification'] =
     'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
     'sql'                       => "int(10) unsigned NOT NULL default '0'"
 );
+$GLOBALS['TL_DCA']['tl_form']['fields']['wemSubmissionArchiveConversationNotification'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_form']['wemSubmissionArchiveConversationNotification'],
+    'exclude'                   => true,
+    'inputType'                 => 'select',
+    'options_callback'          => array('tl_wem_form', 'getArchiveConversationNotifications'),
+    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'clr w50'),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'"
+);
 
 /**
  * Extends miscellaneous methods that are used by the data configuration array.
@@ -174,6 +183,23 @@ class tl_wem_form extends tl_form
     {
         $arrChoices = array();
         $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='new_answer' ORDER BY title");
+
+        while ($objNotifications->next()) {
+            $arrChoices[$objNotifications->id] = $objNotifications->title;
+        }
+
+        return $arrChoices;
+    }
+
+    /**
+     * Get notification choices
+     *
+     * @return array
+     */
+    public function getArchiveConversationNotifications()
+    {
+        $arrChoices = array();
+        $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='archived_conversation' ORDER BY title");
 
         while ($objNotifications->next()) {
             $arrChoices[$objNotifications->id] = $objNotifications->title;
